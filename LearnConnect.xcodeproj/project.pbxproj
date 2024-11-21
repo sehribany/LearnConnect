@@ -6,6 +6,11 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		98B86EF12CEF7C900009C5D8 /* SwiftEntryKit in Frameworks */ = {isa = PBXBuildFile; productRef = 98B86EF02CEF7C900009C5D8 /* SwiftEntryKit */; };
+		98B86EF72CEF7CDE0009C5D8 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 98B86EF62CEF7CDE0009C5D8 /* SnapKit */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		98B86DCA2CEF6AC70009C5D8 /* LearnConnect.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LearnConnect.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -36,6 +41,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				98B86EF12CEF7C900009C5D8 /* SwiftEntryKit in Frameworks */,
+				98B86EF72CEF7CDE0009C5D8 /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -78,6 +85,8 @@
 			);
 			name = LearnConnect;
 			packageProductDependencies = (
+				98B86EF02CEF7C900009C5D8 /* SwiftEntryKit */,
+				98B86EF62CEF7CDE0009C5D8 /* SnapKit */,
 			);
 			productName = LearnConnect;
 			productReference = 98B86DCA2CEF6AC70009C5D8 /* LearnConnect.app */;
@@ -107,6 +116,10 @@
 			);
 			mainGroup = 98B86DC12CEF6AC70009C5D8;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				98B86EEF2CEF7C900009C5D8 /* XCRemoteSwiftPackageReference "SwiftEntryKit" */,
+				98B86EF52CEF7CDE0009C5D8 /* XCRemoteSwiftPackageReference "SnapKit" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 98B86DCB2CEF6AC70009C5D8 /* Products */;
 			projectDirPath = "";
@@ -333,6 +346,38 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		98B86EEF2CEF7C900009C5D8 /* XCRemoteSwiftPackageReference "SwiftEntryKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/huri000/SwiftEntryKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
+		98B86EF52CEF7CDE0009C5D8 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.7.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		98B86EF02CEF7C900009C5D8 /* SwiftEntryKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 98B86EEF2CEF7C900009C5D8 /* XCRemoteSwiftPackageReference "SwiftEntryKit" */;
+			productName = SwiftEntryKit;
+		};
+		98B86EF62CEF7CDE0009C5D8 /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 98B86EF52CEF7CDE0009C5D8 /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 98B86DC22CEF6AC70009C5D8 /* Project object */;
 }
