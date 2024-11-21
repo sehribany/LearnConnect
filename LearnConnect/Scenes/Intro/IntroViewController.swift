@@ -9,7 +9,7 @@ import UIKit
 import SnapKit
 
 class IntroViewController: BaseViewController<IntroViewModel> {
-    
+    // MARK: - Properties
     private lazy var pageControl: UIPageControl = {
         let pageControl = UIPageControl()
         pageControl.tintColor = .blue
@@ -38,6 +38,7 @@ class IntroViewController: BaseViewController<IntroViewModel> {
         button.tintColor = .appButtonTitle1
         button.layer.cornerRadius = 9
         button.titleLabel?.font  = UIFont.systemFont(ofSize: 16, weight: .medium)
+        button.addTarget(self, action: #selector(registerButtonTapped), for: .touchUpInside)
         button.isHidden = true
         return button
     }()
@@ -51,6 +52,7 @@ class IntroViewController: BaseViewController<IntroViewModel> {
         button.layer.borderWidth = 0.5
         button.layer.borderColor = UIColor.appButtonBackground1.cgColor
         button.titleLabel?.font  = UIFont.systemFont(ofSize: 16, weight: .medium)
+        button.addTarget(self, action: #selector(loginButtonTapped), for: .touchUpInside)
         button.isHidden = true
         return button
     }()
@@ -67,7 +69,6 @@ extension IntroViewController{
 
     private func addSubView() {
         view.backgroundColor = .appBackground
-        navigationController?.navigationBar.isHidden = true
         addCollectionView()
         addPageControl()
         addRegisterButton()
@@ -77,7 +78,7 @@ extension IntroViewController{
     private func addPageControl() {
         view.addSubview(pageControl)
         pageControl.snp.makeConstraints { make in
-            make.top.equalTo(collectionView.snp.bottom).offset(-120)
+            make.top.equalTo(collectionView.snp.bottom).offset(-110)
             make.centerX.equalToSuperview()
         }
     }
@@ -98,7 +99,6 @@ extension IntroViewController{
             make.height.equalTo(50)
             make.width.equalTo(160)
         }
-        
     }
     
     private func addLoginButton(){
@@ -109,9 +109,9 @@ extension IntroViewController{
             make.height.equalTo(50)
             make.width.equalTo(160)
         }
-        
     }
 }
+
 //MARK: -Configuration
 extension IntroViewController{
     private func contentConfigure(){
@@ -119,6 +119,7 @@ extension IntroViewController{
         collectionView.delegate = self
     }
 }
+
 //MARK: - UICollectionViewDataSource
 extension IntroViewController: UICollectionViewDataSource{
     
@@ -133,6 +134,7 @@ extension IntroViewController: UICollectionViewDataSource{
         return cell
     }
 }
+
 // MARK: - UICollectionViewDelegateFlowLayout
 extension IntroViewController: UICollectionViewDelegateFlowLayout{
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
@@ -164,18 +166,20 @@ extension IntroViewController: UICollectionViewDelegateFlowLayout{
         }
     }
 }
+
 // MARK: -Actions
 extension IntroViewController {
     @objc
-    private func nextButtonTapped() {
-        if pageControl.currentPage == viewModel.numberOfItemsAt(section: 0) - 1 {
-            //let loginViewController = LoginViewController(viewModel: LoginViewModel())
-            //loginViewController.modalPresentationStyle = .fullScreen
-            //present(loginViewController, animated: true, completion: nil)
-        } else {
-            pageControl.currentPage += 1
-            let indexPath = IndexPath(item: pageControl.currentPage, section: 0)
-            collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
-        }
+    private func registerButtonTapped() {
+        let registerViewModel = RegisterViewModel()
+        let registerViewController = RegisterViewController(viewModel: registerViewModel)
+        navigationController?.pushViewController(registerViewController, animated: true)
+    }
+    
+    @objc
+    private func loginButtonTapped() {
+        let loginViewModel = LoginViewModel()
+        let loginViewController = LoginViewController(viewModel: loginViewModel)
+        navigationController?.pushViewController(loginViewController, animated: true)
     }
 }

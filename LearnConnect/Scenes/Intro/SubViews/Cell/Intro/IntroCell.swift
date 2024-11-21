@@ -66,7 +66,7 @@ extension IntroCell{
     private func addImageView(){
         contentView.addSubview(imageView)
         imageView.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(120)
+            make.top.equalToSuperview().offset(80)
             make.centerX.equalToSuperview()
             make.height.width.equalTo(260)
         }

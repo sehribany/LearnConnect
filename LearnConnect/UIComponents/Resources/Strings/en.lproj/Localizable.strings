@@ -23,6 +23,7 @@
 "Login.toRegister"       = "Dont't have an account ?";
 
 //MARK: - Register
+"Register.signup"           = "Sign Up";
 "Register.email"            = "Email";
 "Register.password"         = "Password";
 "Register.emailplace"       = "Enter your email";
