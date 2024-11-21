@@ -1,0 +1,31 @@
+/* 
+  Localizable.strings
+  LearnConnect
+
+  Created by Şehriban Yıldırım on 21.11.2024.
+  
+*/
+
+//MARK: - Intro
+"Intro.firstTitle"       = "Numerous free trial courses";
+"Intro.secondTitle"      = "Quick and easy learning";
+"Into.thirdTitle"        = "Create your own study plan";
+"Intro.descriptionText1" = "Free courses for you to find your way to learning";
+"Intro.descriptionText2" = "Easy and fast learning at any time to help you improve various skills";
+"Intro.descriptionText3" = "Study according to the study plan, make study more motivated";
+
+//MARK: - Login
+"Login.email"            = "Email";
+"Login.password"         = "Password";
+"Login.emailplace"       = "Enter your email";
+"Login.passwordplace"    = "Enter your password";
+"Login.login"            = "Log In";
+"Login.toRegister"       = "Dont't have an account ?";
+
+//MARK: - Register
+"Register.email"            = "Email";
+"Register.password"         = "Password";
+"Register.emailplace"       = "Enter your email";
+"Register.passwordplace"    = "Enter a strong password";
+"Register.register"         = "Register";
+"Register.toLogin"          = "I have an account ?";
