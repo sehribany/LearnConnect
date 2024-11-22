@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import CoreData
  
 class RegisterViewController: BaseViewController<RegisterViewModel> {
 
@@ -15,18 +16,13 @@ class RegisterViewController: BaseViewController<RegisterViewModel> {
         super.viewDidLoad()
         self.addSubView()
         self.navigationConfigure()
-        configure()
+        registerView.delegate = self
     }
     
     private func navigationConfigure() {
         navigationItem.hidesBackButton = true
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.title = localizedString("Register.signup")
-    }
-    
-    private func configure(){
-        registerView.toLoginButton.addTarget(self, action: #selector(toLogin), for: .touchUpInside)
-        registerView.registerButton.addTarget(self, action: #selector(register), for: .touchUpInside)
     }
 }
 
@@ -44,16 +40,29 @@ extension RegisterViewController{
         }
     }
 }
-//MARK: -Actions
-extension RegisterViewController{
-    
-    @objc
-    private func toLogin(){
-        navigationController?.pushViewController(LoginViewController(viewModel: LoginViewModel()), animated: true)
-    }
-    
-    @objc
-    private func register(){
+//MARK: -RegisterViewDelegate
+extension RegisterViewController: RegisterViewDelegate{
         
+    func didTapRegister(email: String, password: String) {
+        guard !email.isEmpty, !password.isEmpty else {
+            ToastPresenter.showWarningToast(text: "Email and Password cannot be empty!")
+            registerView.clearFields()
+            return
+        }
+        
+        if viewModel.isEmailAlreadyRegistered(email: email) {
+            ToastPresenter.showWarningToast(text: "This email is already registered!")
+            registerView.clearFields()
+            return
+        }
+        
+        viewModel.registerUser(email: email, password: password)
+        ToastPresenter.showWarningToast(text: "Registration Successful!")
+        registerView.clearFields()
+        self.didTapToLogin()
+    }
+
+    func didTapToLogin() {
+        navigationController?.pushViewController(LoginViewController(viewModel: LoginViewModel()), animated: true)
     }
 }

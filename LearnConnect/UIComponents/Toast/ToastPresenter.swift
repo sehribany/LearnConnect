@@ -11,10 +11,10 @@ public class ToastPresenter {
     
     public static func showWarningToast(text: String) {
         var attributes               = EKAttributes.topToast
-        attributes.entryBackground   = .color(color: EKColor(light: .blue, dark: .brown))
+        attributes.entryBackground   = .color(color: EKColor(light: .appButtonBackground1, dark: .appButtonBackground1))
         attributes.entranceAnimation = .translation
         attributes.exitAnimation     = .translation
-
+        
         let customView = ToastWarningView(text: text)
         SwiftEntryKit.display(entry: customView, using: attributes)
     }

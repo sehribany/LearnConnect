@@ -13,7 +13,7 @@ class ToastWarningView: UIView {
     private let label: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 15, weight: .medium)
-        label.textColor = .white
+        label.textColor = .appTitle
         label.textAlignment = .center
         label.numberOfLines = 0
         return label

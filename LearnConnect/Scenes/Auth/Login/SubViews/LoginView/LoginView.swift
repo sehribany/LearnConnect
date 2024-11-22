@@ -8,7 +8,14 @@
 import UIKit
 import SnapKit
 
+protocol LoginViewDelegate: AnyObject {
+    func didTapLogin(email: String, password: String)
+    func didTapToRegister()
+}
+
 class LoginView: UIView {
+    
+    weak var delegate: LoginViewDelegate?
 
     private lazy var emailLabel: UILabel = {
         let label  = UILabel()
@@ -18,7 +25,7 @@ class LoginView: UIView {
         return label
     }()
         
-    lazy var emailText : UITextField = {
+    private lazy var emailText : UITextField = {
         let text = UITextField()
         text.borderStyle = .roundedRect
         text.backgroundColor = .clear
@@ -41,7 +48,7 @@ class LoginView: UIView {
         return label
     }()
         
-    lazy var passwordText : UITextField = {
+    private lazy var passwordText : UITextField = {
         let text = UITextField()
         text.borderStyle = .roundedRect
         text.backgroundColor = .clear
@@ -56,13 +63,14 @@ class LoginView: UIView {
         return text
     }()
     
-    lazy var loginButton: UIButton = {
+    private lazy var loginButton: UIButton = {
         let button = UIButton(type: .system)
         button.backgroundColor = .appButtonBackground1
         button.setTitle(localizedString("Login.login"), for: .normal)
         button.tintColor = .appButtonTitle1
         button.layer.cornerRadius = 9
         button.titleLabel?.font  = UIFont.systemFont(ofSize: 23)
+        button.addTarget(self, action: #selector(didTapLogin), for: .touchUpInside)
         return button
     }()
     
@@ -74,12 +82,13 @@ class LoginView: UIView {
         return label
     }()
     
-     lazy var toRegisterButton: UIButton = {
+     private lazy var toRegisterButton: UIButton = {
         let button = UIButton(type: .system)
         button.backgroundColor = .clear
         button.setTitle(localizedString("Register.register"), for: .normal)
-         button.tintColor = .appButtonBackground1
+        button.tintColor = .appButtonBackground1
         button.titleLabel?.font  = UIFont.systemFont(ofSize: 14)
+        button.addTarget(self, action: #selector(didTapToRegister), for: .touchUpInside)
         return button
     }()
     
@@ -176,5 +185,20 @@ extension LoginView{
     
     @objc private func dismissKeyboard(){
         self.endEditing(true)
+    }
+    
+    @objc private func didTapLogin() {
+        guard let email = emailText.text,
+              let password = passwordText.text else { return }
+        delegate?.didTapLogin(email: email, password: password)
+    }
+    
+    @objc private func didTapToRegister() {
+        delegate?.didTapToRegister()
+    }
+    
+    func clearFields() {
+        emailText.text = ""
+        passwordText.text = ""
     }
 }

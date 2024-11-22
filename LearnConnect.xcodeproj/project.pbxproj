@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		98B86EF12CEF7C900009C5D8 /* SwiftEntryKit in Frameworks */ = {isa = PBXBuildFile; productRef = 98B86EF02CEF7C900009C5D8 /* SwiftEntryKit */; };
 		98B86EF72CEF7CDE0009C5D8 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 98B86EF62CEF7CDE0009C5D8 /* SnapKit */; };
+		98B86F142CEFB1780009C5D8 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 98B86F132CEFB1780009C5D8 /* Kingfisher */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -41,6 +42,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				98B86F142CEFB1780009C5D8 /* Kingfisher in Frameworks */,
 				98B86EF12CEF7C900009C5D8 /* SwiftEntryKit in Frameworks */,
 				98B86EF72CEF7CDE0009C5D8 /* SnapKit in Frameworks */,
 			);
@@ -87,6 +89,7 @@
 			packageProductDependencies = (
 				98B86EF02CEF7C900009C5D8 /* SwiftEntryKit */,
 				98B86EF62CEF7CDE0009C5D8 /* SnapKit */,
+				98B86F132CEFB1780009C5D8 /* Kingfisher */,
 			);
 			productName = LearnConnect;
 			productReference = 98B86DCA2CEF6AC70009C5D8 /* LearnConnect.app */;
@@ -119,6 +122,7 @@
 			packageReferences = (
 				98B86EEF2CEF7C900009C5D8 /* XCRemoteSwiftPackageReference "SwiftEntryKit" */,
 				98B86EF52CEF7CDE0009C5D8 /* XCRemoteSwiftPackageReference "SnapKit" */,
+				98B86F122CEFB1780009C5D8 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 98B86DCB2CEF6AC70009C5D8 /* Products */;
@@ -364,6 +368,14 @@
 				minimumVersion = 5.7.1;
 			};
 		};
+		98B86F122CEFB1780009C5D8 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.1.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -376,6 +388,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 98B86EF52CEF7CDE0009C5D8 /* XCRemoteSwiftPackageReference "SnapKit" */;
 			productName = SnapKit;
+		};
+		98B86F132CEFB1780009C5D8 /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 98B86F122CEFB1780009C5D8 /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

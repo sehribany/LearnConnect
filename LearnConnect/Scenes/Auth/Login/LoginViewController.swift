@@ -15,18 +15,13 @@ class LoginViewController: BaseViewController<LoginViewModel> {
         super.viewDidLoad()
         self.addSubView()
         self.navigationConfigure()
-        configure()
+        loginView.delegate = self
     }
     
     private func navigationConfigure() {
         navigationItem.hidesBackButton = true
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.title = localizedString("Login.login")
-    }
-    
-    private func configure(){
-        loginView.toRegisterButton.addTarget(self, action: #selector(toLogin), for: .touchUpInside)
-        loginView.loginButton.addTarget(self, action: #selector(register), for: .touchUpInside)
     }
 }
 
@@ -44,16 +39,26 @@ extension LoginViewController{
         }
     }
 }
-//MARK: -Actions
-extension LoginViewController{
-    
-    @objc
-    private func toLogin(){
-        navigationController?.pushViewController(RegisterViewController(viewModel: RegisterViewModel()), animated: true)
+//MARK: -LoginViewDelegate
+extension LoginViewController: LoginViewDelegate{
+    func didTapLogin(email: String, password: String) {
+        guard !email.isEmpty, !password.isEmpty else {
+            ToastPresenter.showWarningToast(text: "Email and Password cannot be empty!")
+            loginView.clearFields()
+            return
+        }
+        
+        if viewModel.authenticateUser(email: email, password: password) {
+            ToastPresenter.showWarningToast(text: "Login successful!")
+            loginView.clearFields()
+            self.navigationController?.pushViewController(HomeViewController(), animated: true)
+        } else {
+            ToastPresenter.showWarningToast(text: "Invalid email or password!")
+            loginView.clearFields()
+        }
     }
     
-    @objc
-    private func register(){
-        
+    func didTapToRegister() {
+        navigationController?.pushViewController(RegisterViewController(viewModel: RegisterViewModel()), animated: true)
     }
 }
