@@ -1,19 +1,21 @@
 //
-//  HomeViewController.swift
+//  DetailViewController.swift
 //  LearnConnect
 //
-//  Created by Şehriban Yıldırım on 21.11.2024.
+//  Created by Şehriban Yıldırım on 23.11.2024.
 //
 
 import UIKit
 
-class HomeViewController: BaseViewController<HomeViewModel> {
+class DetailViewController: BaseViewController<DetailViewModel> {
+
+    private lazy var statementnView = StatementView()
     
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.register(CourseCell.self, forCellWithReuseIdentifier: CourseCell.identifier)
+        collectionView.register(LessonCell.self, forCellWithReuseIdentifier: LessonCell.identifier)
         collectionView.backgroundColor = .appBackground
         collectionView.showsVerticalScrollIndicator   = false
         collectionView.showsHorizontalScrollIndicator = false
@@ -22,16 +24,11 @@ class HomeViewController: BaseViewController<HomeViewModel> {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .appBackground
         navigationConfigure()
         addSubView()
         contentConfigure()
-        viewModel.fetchCourse()
-        bindViewModel()
-    }
-    
-    private func navigationConfigure() {
-        navigationItem.title = "Home"
+        statementnView.configure(with: viewModel.course.description)
+        addSubView()
     }
     
     private func contentConfigure(){
@@ -39,53 +36,56 @@ class HomeViewController: BaseViewController<HomeViewModel> {
         collectionView.delegate = self
     }
     
-    private func bindViewModel() {
-        viewModel.didSuccessFetchCourse = { [weak self] in
-            DispatchQueue.main.async {
-                self?.collectionView.reloadData()
-            }
-        }
-        
-        viewModel.didFailWithError = { error in
-            print("Veri çekme hatası: \(error)")
-        }
+    private func navigationConfigure() {
+        view.backgroundColor = .appBackground
+        navigationItem.title = viewModel.course.name
     }
 }
 
 //MARK: - UILayout
-extension HomeViewController{
-
-    private func addSubView() {
-        view.backgroundColor = .appBackground
+extension DetailViewController{
+    private func addSubView(){
+        addStatementView()
         addCollectionView()
     }
-        
+    
+    private func addStatementView() {
+        view.addSubview(statementnView)
+        statementnView.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(10)
+            make.leading.trailing.equalToSuperview().inset(10)
+            make.height.equalTo(100)
+        }
+    }
+    
     private func addCollectionView() {
         view.addSubview(collectionView)
         collectionView.snp.makeConstraints { make in
-            make.bottom.top.leading.trailing.equalToSuperview()
+            make.top.equalTo(statementnView.snp.bottom).offset(10)
+            make.bottom.leading.trailing.equalToSuperview()
         }
     }
 }
 
-//MARK: - UICollectionViewDataSource
-extension HomeViewController: UICollectionViewDataSource{
-    
+// MARK: - UICollectionViewDataSource & UICollectionViewDelegate
+extension DetailViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        viewModel.numberOfItemsAt(section: section)
+        return viewModel.course.lessons.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CourseCell.identifier, for: indexPath) as! CourseCell
-        let cellItem = viewModel.cellItemAt(indexPath: indexPath)
-        cell.set(viewModel: cellItem)
-        cell.delegate = self
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: LessonCell.identifier, for: indexPath) as? LessonCell else {
+            return UICollectionViewCell()
+        }
+        
+        let lesson = viewModel.course.lessons[indexPath.item]
+        cell.configure(with: lesson)
         return cell
     }
 }
 
 // MARK: - UICollectionViewDelegateFlowLayout
-extension HomeViewController: UICollectionViewDelegateFlowLayout {
+extension DetailViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
     }
@@ -101,15 +101,6 @@ extension HomeViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let totalSpacing = 40
         let width = (collectionView.frame.width - CGFloat(totalSpacing))
-        return CGSize(width: width, height: 320)
-    }
-}
-
-//MARK: -
-extension HomeViewController: CourseCellDelegate{
-    func didTapToCourseImageView(course: Course) {
-        let detailViewModel = DetailViewModel(course: course)
-        let detailVC = DetailViewController(viewModel: detailViewModel)
-        navigationController?.pushViewController(detailVC, animated: true)
+        return CGSize(width: width, height: 300)
     }
 }

@@ -7,10 +7,16 @@
 
 import UIKit
 
+protocol CourseCellDelegate: AnyObject {
+    func didTapToCourseImageView(course: Course)
+}
+
 class CourseCell: UICollectionViewCell {
     
     //MARK: - Properties
     static var identifier: String = "CourseCell"
+    
+    weak var delegate: CourseCellDelegate?
     
     private lazy var imageView: UIImageView = {
         let image           = UIImageView()
@@ -35,7 +41,22 @@ class CourseCell: UICollectionViewCell {
         imageView.isUserInteractionEnabled = true
         imageView.layer.cornerRadius = 16
         imageView.clipsToBounds = true
+        imageView.isUserInteractionEnabled = true
         return imageView
+    }()
+    
+    private lazy var categoryLabel: UILabel = {
+        let label             = UILabel()
+        label.textColor       = .appCategoryTitle
+        label.backgroundColor = .appCategory
+        label.textAlignment = .left
+        label.numberOfLines = 2
+        label.font          = UIFont.systemFont(ofSize: 16, weight: .light)
+        label.sizeToFit()
+        label.layer.cornerRadius = 5
+        label.clipsToBounds = true
+        label.sizeToFit()
+        return label
     }()
     
     private lazy var registerButton: UIButton = {
@@ -68,6 +89,7 @@ extension CourseCell{
         addImageView()
         addTitleLabel()
         addToCourseImageView()
+        addCategoryLabel()
         addRegisterButton()
     }
     
@@ -96,13 +118,22 @@ extension CourseCell{
         }
     }
     
+    private func addCategoryLabel() {
+        contentView.addSubview(categoryLabel)
+        categoryLabel.snp.makeConstraints { make in
+            make.top.equalTo(titleLabel.snp.bottom).offset(20)
+            make.leading.equalToSuperview().offset(10)
+            make.height.equalTo(20)
+        }
+    }
+    
     private func addRegisterButton() {
         contentView.addSubview(registerButton)
         registerButton.snp.makeConstraints { make in
             make.top.equalTo(titleLabel.snp.bottom).offset(20)
-            make.leading.equalToSuperview().offset(10)
+            make.leading.equalTo(categoryLabel.snp.trailing).offset(10)
             make.height.equalTo(20)
-            make.width.equalTo(70)
+            make.width.equalTo(75)
         }
     }
 }
@@ -114,6 +145,7 @@ extension CourseCell{
         let course = viewModel.course
         imageView.setImage(course.image)
         titleLabel.text = course.name
+        categoryLabel.text = "  \(course.category.rawValue)  "
     }
     
     private func configure(){
@@ -124,19 +156,21 @@ extension CourseCell{
         layer.shadowOffset = CGSize(width: 0, height: 8)
         layer.shadowRadius = 10
         layer.masksToBounds = false
+        setupGestureRecognizers()
     }
 
+    // MARK: - Gesture Recognizer
     private func setupGestureRecognizers() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(toCourseImageViewTapped))
         toCourseImageView.addGestureRecognizer(tapGesture)
     }
-    
+
     @objc private func toCourseImageViewTapped() {
-        print("Image tapped!")
+        guard let course = viewModel?.course else { return }
+        delegate?.didTapToCourseImageView(course: course)
     }
     
     @objc private func registerButtonTapped() {
         print("Kayıt Ol butonuna tıklandı!")
-        // Buton ile yapılacak işlemleri buraya ekleyin
     }
 }

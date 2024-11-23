@@ -10,6 +10,8 @@
 		98B86EF12CEF7C900009C5D8 /* SwiftEntryKit in Frameworks */ = {isa = PBXBuildFile; productRef = 98B86EF02CEF7C900009C5D8 /* SwiftEntryKit */; };
 		98B86EF72CEF7CDE0009C5D8 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 98B86EF62CEF7CDE0009C5D8 /* SnapKit */; };
 		98B86F142CEFB1780009C5D8 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 98B86F132CEFB1780009C5D8 /* Kingfisher */; };
+		98B8701B2CF0CBE70009C5D8 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 98B8701A2CF0CBE70009C5D8 /* Alamofire */; };
+		98D501AD2CF23CBD002F6339 /* YouTubeiOSPlayerHelper in Frameworks */ = {isa = PBXBuildFile; productRef = 98D501AC2CF23CBD002F6339 /* YouTubeiOSPlayerHelper */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,8 +45,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				98B86F142CEFB1780009C5D8 /* Kingfisher in Frameworks */,
+				98B8701B2CF0CBE70009C5D8 /* Alamofire in Frameworks */,
 				98B86EF12CEF7C900009C5D8 /* SwiftEntryKit in Frameworks */,
 				98B86EF72CEF7CDE0009C5D8 /* SnapKit in Frameworks */,
+				98D501AD2CF23CBD002F6339 /* YouTubeiOSPlayerHelper in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -90,6 +94,8 @@
 				98B86EF02CEF7C900009C5D8 /* SwiftEntryKit */,
 				98B86EF62CEF7CDE0009C5D8 /* SnapKit */,
 				98B86F132CEFB1780009C5D8 /* Kingfisher */,
+				98B8701A2CF0CBE70009C5D8 /* Alamofire */,
+				98D501AC2CF23CBD002F6339 /* YouTubeiOSPlayerHelper */,
 			);
 			productName = LearnConnect;
 			productReference = 98B86DCA2CEF6AC70009C5D8 /* LearnConnect.app */;
@@ -123,6 +129,8 @@
 				98B86EEF2CEF7C900009C5D8 /* XCRemoteSwiftPackageReference "SwiftEntryKit" */,
 				98B86EF52CEF7CDE0009C5D8 /* XCRemoteSwiftPackageReference "SnapKit" */,
 				98B86F122CEFB1780009C5D8 /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				98B870192CF0CBE70009C5D8 /* XCRemoteSwiftPackageReference "Alamofire" */,
+				98D501AB2CF23CBD002F6339 /* XCRemoteSwiftPackageReference "youtube-ios-player-helper" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 98B86DCB2CEF6AC70009C5D8 /* Products */;
@@ -376,6 +384,22 @@
 				minimumVersion = 8.1.1;
 			};
 		};
+		98B870192CF0CBE70009C5D8 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "http://github.com//Alamofire/Alamofire.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.10.1;
+			};
+		};
+		98D501AB2CF23CBD002F6339 /* XCRemoteSwiftPackageReference "youtube-ios-player-helper" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/youtube/youtube-ios-player-helper.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.4;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -393,6 +417,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 98B86F122CEFB1780009C5D8 /* XCRemoteSwiftPackageReference "Kingfisher" */;
 			productName = Kingfisher;
+		};
+		98B8701A2CF0CBE70009C5D8 /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 98B870192CF0CBE70009C5D8 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+		98D501AC2CF23CBD002F6339 /* YouTubeiOSPlayerHelper */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 98D501AB2CF23CBD002F6339 /* XCRemoteSwiftPackageReference "youtube-ios-player-helper" */;
+			productName = YouTubeiOSPlayerHelper;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

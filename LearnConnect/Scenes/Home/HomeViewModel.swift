@@ -47,7 +47,6 @@ extension HomeViewModel{
             
             switch result {
             case .success(let courses):
-                print(courses)
                 self.allCourses = courses
                 self.cellItems = courses.map { CourseCellViewModel(course: $0) }
                 self.didSuccessFetchCourse?()

@@ -45,19 +45,19 @@ extension RegisterViewController: RegisterViewDelegate{
         
     func didTapRegister(email: String, password: String) {
         guard !email.isEmpty, !password.isEmpty else {
-            ToastPresenter.showWarningToast(text: "Email and Password cannot be empty!")
+            ToastPresenter.showWarningToast(text: localizedString("Toast.ep.empty"))
             registerView.clearFields()
             return
         }
         
         if viewModel.isEmailAlreadyRegistered(email: email) {
-            ToastPresenter.showWarningToast(text: "This email is already registered!")
+            ToastPresenter.showWarningToast(text: localizedString("Toast.emailalready"))
             registerView.clearFields()
             return
         }
         
         viewModel.registerUser(email: email, password: password)
-        ToastPresenter.showWarningToast(text: "Registration Successful!")
+        ToastPresenter.showWarningToast(text: localizedString("Toast.registrationsuccess"))
         registerView.clearFields()
         self.didTapToLogin()
     }

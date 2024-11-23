@@ -43,17 +43,17 @@ extension LoginViewController{
 extension LoginViewController: LoginViewDelegate{
     func didTapLogin(email: String, password: String) {
         guard !email.isEmpty, !password.isEmpty else {
-            ToastPresenter.showWarningToast(text: "Email and Password cannot be empty!")
+            ToastPresenter.showWarningToast(text: localizedString("Toast.ep.empty"))
             loginView.clearFields()
             return
         }
         
         if viewModel.authenticateUser(email: email, password: password) {
-            ToastPresenter.showWarningToast(text: "Login successful!")
+            ToastPresenter.showWarningToast(text: localizedString("Toast.loginsuccess"))
             loginView.clearFields()
-            self.navigationController?.pushViewController(HomeViewController(), animated: true)
+            self.navigationController?.pushViewController(MainTabBarController(), animated: true)
         } else {
-            ToastPresenter.showWarningToast(text: "Invalid email or password!")
+            ToastPresenter.showWarningToast(text: localizedString("Toast.invalid"))
             loginView.clearFields()
         }
     }
