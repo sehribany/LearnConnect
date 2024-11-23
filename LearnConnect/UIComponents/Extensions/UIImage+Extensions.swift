@@ -20,5 +20,8 @@ extension UIImage {
             return kf.resize(to: size)
         }
     }
+    
+    func scaled(to size: CGSize) -> UIImage {
+        return self.kf.resize(to: size)
+    }
 }
-

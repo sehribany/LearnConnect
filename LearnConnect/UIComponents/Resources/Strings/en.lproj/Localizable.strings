@@ -30,3 +30,11 @@
 "Register.passwordplace"    = "Enter a strong password";
 "Register.register"         = "Register";
 "Register.toLogin"          = "I have an account ?";
+
+//MARK: -Toast
+"Toast.ep.empty"            = "Email and Password cannot be empty!";
+"Toast.loginsuccess"        = "Login successful!";
+"Toast.invalid"             = "Invalid email or password!";
+"Toast.emailalready"        = "This email is already registered!";
+"Toast.registrationsuccess" = "Registration Successful!";
+
