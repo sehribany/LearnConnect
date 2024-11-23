@@ -26,7 +26,16 @@ class LessonCell: UICollectionViewCell {
         let layer = AVPlayerLayer()
         layer.cornerRadius = 8
         layer.videoGravity = .resizeAspect
+        layer.backgroundColor = UIColor.black.cgColor
         return layer
+    }()
+
+    private lazy var playButton: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(systemName: "play.circle"), for: .normal)
+        button.tintColor = .white
+        button.addTarget(self, action: #selector(playButtonTapped), for: .touchUpInside)
+        return button
     }()
 
     override init(frame: CGRect) {
@@ -38,6 +47,16 @@ class LessonCell: UICollectionViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        playerLayer.frame = CGRect(
+            x: 10,
+            y: titleLabel.frame.maxY + 10,
+            width: contentView.frame.width - 20,
+            height: (contentView.frame.width - 20) * 0.56
+        )
+    }
 }
 
 // MARK: - UILayout
@@ -45,6 +64,7 @@ extension LessonCell {
     private func addSubViews() {
         addTitle()
         addPlayerView()
+        addPlayButton()
     }
 
     private func addTitle() {
@@ -56,14 +76,17 @@ extension LessonCell {
 
     private func addPlayerView() {
         contentView.layer.addSublayer(playerLayer)
-        // PlayerLayer konumlandırma
-        playerLayer.frame = CGRect(
-            x: 10,
-            y: titleLabel.frame.height + 10,
-            width: contentView.frame.width - 20,
-            height: (contentView.frame.width - 20) * 0.56
-        )
     }
+
+    private func addPlayButton() {
+        contentView.addSubview(playButton)
+        playButton.snp.makeConstraints { make in
+            make.centerX.equalTo(contentView)
+            make.centerY.equalTo(titleLabel.snp.bottom).offset((contentView.frame.width - 20) * 0.28)
+            make.size.equalTo(CGSize(width: 50, height: 50))
+        }
+    }
+
 }
 
 // MARK: - Configure and Set Localize
@@ -86,7 +109,6 @@ extension LessonCell {
         // Yeni player oluştur
         player = AVPlayer(url: url)
         playerLayer.player = player
-        player?.play() // Otomatik oynatma
     }
 
     private func configureSetUp() {
@@ -99,3 +121,13 @@ extension LessonCell {
         layer.masksToBounds = false
     }
 }
+
+// MARK: - Play Button Action
+extension LessonCell {
+    @objc private func playButtonTapped() {
+        guard let player = player else { return }
+        player.play()
+        playButton.isHidden = true // Play butonunu gizle
+    }
+}
+
