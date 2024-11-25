@@ -9,15 +9,17 @@ import UIKit
 
 class DetailViewController: BaseViewController<DetailViewModel> {
 
-    private lazy var statementnView = StatementView()
+    private lazy var statementView = StatementView()
     
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
+        layout.minimumLineSpacing = 20
+        layout.minimumInteritemSpacing = 20
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.register(LessonCell.self, forCellWithReuseIdentifier: LessonCell.identifier)
         collectionView.backgroundColor = .appBackground
-        collectionView.showsVerticalScrollIndicator   = false
+        collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
         return collectionView
     }()
@@ -25,10 +27,9 @@ class DetailViewController: BaseViewController<DetailViewModel> {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationConfigure()
-        addSubView()
+        addSubViews()
         contentConfigure()
-        statementnView.configure(with: viewModel.course.description)
-        addSubView()
+        statementView.configure(with: viewModel.course.description)
     }
     
     private func contentConfigure(){
@@ -44,14 +45,14 @@ class DetailViewController: BaseViewController<DetailViewModel> {
 
 //MARK: - UILayout
 extension DetailViewController{
-    private func addSubView(){
+    private func addSubViews(){
         addStatementView()
         addCollectionView()
     }
     
     private func addStatementView() {
-        view.addSubview(statementnView)
-        statementnView.snp.makeConstraints { make in
+        view.addSubview(statementView)
+        statementView.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(10)
             make.leading.trailing.equalToSuperview().inset(10)
             make.height.equalTo(100)
@@ -61,7 +62,7 @@ extension DetailViewController{
     private func addCollectionView() {
         view.addSubview(collectionView)
         collectionView.snp.makeConstraints { make in
-            make.top.equalTo(statementnView.snp.bottom).offset(10)
+            make.top.equalTo(statementView.snp.bottom).offset(10)
             make.bottom.leading.trailing.equalToSuperview()
         }
     }
@@ -99,8 +100,9 @@ extension DetailViewController: UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let totalSpacing = 40
-        let width = (collectionView.frame.width - CGFloat(totalSpacing))
-        return CGSize(width: width, height: 300)
+        let totalSpacing: CGFloat = 40 // Left + Right insets
+        let width = (collectionView.frame.width - totalSpacing)
+        return CGSize(width: width, height: 300) // Height ihtiyacınıza göre ayarlayın
     }
 }
+
