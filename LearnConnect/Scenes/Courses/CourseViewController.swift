@@ -8,7 +8,7 @@ import UIKit
 
 class CourseViewController: BaseViewController<CourseViewModel> {
     
-    //MARK: - Properties
+    // MARK: - Properties
     private lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.register(RegistedCell.self, forCellReuseIdentifier: RegistedCell.identifier)
@@ -21,12 +21,25 @@ class CourseViewController: BaseViewController<CourseViewModel> {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        addSubViews()
+        setupView()
         viewModel.fetchRegisteredCourses()
         NotificationCenter.default.addObserver(self, selector: #selector(courseAdded), name: NSNotification.Name("CourseAdded"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(courseRemoved), name: NSNotification.Name("CourseRemoved"), object: nil)
     }
     
+    private func setupView() {
+        view.addSubview(tableView)
+        tableView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+    }
+
     @objc private func courseAdded() {
+        viewModel.fetchRegisteredCourses()
+        tableView.reloadData()
+    }
+
+    @objc private func courseRemoved() {
         viewModel.fetchRegisteredCourses()
         tableView.reloadData()
     }
@@ -35,26 +48,15 @@ class CourseViewController: BaseViewController<CourseViewModel> {
         NotificationCenter.default.removeObserver(self)
     }
 }
-//MARK: - UILayout
-extension CourseViewController{
-    private func addSubViews(){
-        addTableView()
-    }
-    
-    private func addTableView(){
-        view.addSubview(tableView)
-        tableView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
-    }
-}
 
 // MARK: - UITableViewDataSource
 extension CourseViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.numberOfItemsAt(section: section)
+        let rowCount = viewModel.numberOfItemsAt(section: section)
+        print("Number of rows in section \(section): \(rowCount)")
+        return rowCount
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: RegistedCell.identifier, for: indexPath) as! RegistedCell
         let cellItem = viewModel.cellItemAt(indexPath: indexPath)
@@ -69,11 +71,22 @@ extension CourseViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { [weak self] (action, view, completionHandler) in
             guard let self = self else { return }
+        
             let courseToDelete = self.viewModel.cellItemAt(indexPath: indexPath).course
             CourseManager.shared.removeCourse(courseToDelete)
             self.viewModel.fetchRegisteredCourses()
-            tableView.delegate = self
-            tableView.deleteRows(at: [indexPath], with: .automatic)
+            
+            DispatchQueue.main.async {
+                self.viewModel.fetchRegisteredCourses()
+                let currentNumberOfRows = tableView.numberOfRows(inSection: 0)
+                let updatedNumberOfRows = self.viewModel.numberOfItemsAt(section: 0)
+
+                if updatedNumberOfRows < currentNumberOfRows {
+                    tableView.deleteRows(at: [indexPath], with: .automatic)
+                } else {
+                    tableView.reloadData()
+                }
+            }
             NotificationCenter.default.post(name: NSNotification.Name("CourseDeleted"), object: courseToDelete)
             completionHandler(true)
         }
@@ -85,13 +98,10 @@ extension CourseViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 100
     }
-    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return 10
-    }
 }
 
-//MARK: - CourseCellDelegate
-extension CourseViewController: RegistedCellDelegate{
+// MARK: - RegistedCellDelegate
+extension CourseViewController: RegistedCellDelegate {
     func didTapToCourseImageView(course: Course) {
         let detailViewModel = DetailViewModel(course: course)
         let detailVC = DetailViewController(viewModel: detailViewModel)

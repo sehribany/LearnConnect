@@ -30,11 +30,11 @@ final class HomeViewModel: BaseViewModel, HomeViewProtocol {
         return cellItems.count
     }
     
-    func cellItemAt(indexPath: IndexPath) -> any CourseCellProtocol {
+    func cellItemAt(indexPath: IndexPath) -> CourseCellProtocol {
         return cellItems[indexPath.row]
     }
-        
 }
+
 // MARK: - Fetching Course
 extension HomeViewModel {
     func fetchCourse() {

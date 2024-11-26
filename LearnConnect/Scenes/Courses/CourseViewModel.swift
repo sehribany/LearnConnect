@@ -17,17 +17,16 @@ protocol CourseViewEventSource: AnyObject {}
 protocol CourseViewProtocol: CourseViewDataSource, CourseViewEventSource {}
 
 final class CourseViewModel: BaseViewModel, CourseViewProtocol {
-    
     var cellItems: [CourseCellViewModel] = []
-    
+
     override init() {
         super.init()
         fetchRegisteredCourses()
     }
-    
-    // Fetches the registered courses from the `CourseManager`.
+
+    /// Fetches the registered courses for the current user.
     func fetchRegisteredCourses() {
-        let courses = CourseManager.shared.registeredCourses
+        let courses = CourseManager.shared.currentUserCourses
         self.cellItems = courses.map { CourseCellViewModel(course: $0) }
     }
     
