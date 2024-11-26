@@ -9,6 +9,17 @@ import UIKit
 
 class MainTabBarController: UITabBarController {
     
+    var userEmail: String?
+    
+    init(userEmail: String?) {
+        self.userEmail = userEmail
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         tabBar.tintColor = .appButtonBackground1
@@ -42,7 +53,7 @@ class MainTabBarController: UITabBarController {
     }
 
     private func createProfileViewController() -> UIViewController {
-        let profileViewController = ProfileViewController(viewModel: ProfileViewModel())
+        let profileViewController = ProfileViewController(viewModel: ProfileViewModel(userEmail: userEmail))
         profileViewController.tabBarItem.image = configureTabBarIcons(iconName: "icProfile")
         profileViewController.tabBarItem.title = localizedString("Maintab.profile")
         return profileViewController

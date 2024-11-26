@@ -47,11 +47,11 @@ extension LoginViewController: LoginViewDelegate{
             loginView.clearFields()
             return
         }
-        
         if viewModel.authenticateUser(email: email, password: password) {
             ToastPresenter.showWarningToast(text: localizedString("Toast.loginsuccess"))
             loginView.clearFields()
-            self.navigationController?.pushViewController(MainTabBarController(), animated: true)
+            let mainTabBarController = MainTabBarController(userEmail: email)
+            self.navigationController?.pushViewController(mainTabBarController, animated: true)
         } else {
             ToastPresenter.showWarningToast(text: localizedString("Toast.invalid"))
             loginView.clearFields()

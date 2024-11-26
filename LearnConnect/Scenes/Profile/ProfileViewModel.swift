@@ -13,5 +13,11 @@ protocol ProfileViewEventSource{}
 
 protocol ProfileViewProtocol: ProfileViewDataSource, ProfileViewEventSource{}
 
-final class ProfileViewModel: BaseViewModel, ProfileViewProtocol{}
+final class ProfileViewModel: BaseViewModel, ProfileViewProtocol{
+    var userEmail: String?
+    
+    init(userEmail: String?) {
+        self.userEmail = userEmail
+    }
+}
 

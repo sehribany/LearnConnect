@@ -47,4 +47,6 @@
 "Maintab.course"          = "Course";
 "Maintab.profile"         = "Profile";
 
-
+//MARK: -Profile
+"Profile.noemail" = "No email available";
+"Theme.preference" = "Theme";
