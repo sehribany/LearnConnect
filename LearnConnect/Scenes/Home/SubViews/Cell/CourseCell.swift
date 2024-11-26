@@ -9,14 +9,13 @@ import UIKit
 
 protocol CourseCellDelegate: AnyObject {
     func didTapToCourseImageView(course: Course)
+    func didTapRegisterButton(course: Course)
 }
 
 class CourseCell: UICollectionViewCell {
     
     //MARK: - Properties
     static var identifier: String = "CourseCell"
-    
-    weak var delegate: CourseCellDelegate?
     
     private lazy var imageView: UIImageView = {
         let image           = UIImageView()
@@ -61,7 +60,7 @@ class CourseCell: UICollectionViewCell {
     
     private lazy var registerButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("Kayıt Ol", for: .normal)
+        button.setTitle(localizedString("RegisterButton.Register"), for: .normal)
         button.setTitleColor(.appRegisterTitle, for: .normal)
         button.backgroundColor = UIColor.appRegisterButton
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .light)
@@ -70,6 +69,7 @@ class CourseCell: UICollectionViewCell {
         return button
     }()
 
+    weak var delegate : CourseCellDelegate?
     weak var viewModel:  CourseCellProtocol?
     
     override init(frame: CGRect) {
@@ -133,7 +133,7 @@ extension CourseCell{
             make.top.equalTo(titleLabel.snp.bottom).offset(20)
             make.leading.equalTo(categoryLabel.snp.trailing).offset(10)
             make.height.equalTo(20)
-            make.width.equalTo(75)
+            make.width.equalTo(85)
         }
     }
 }
@@ -164,13 +164,20 @@ extension CourseCell{
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(toCourseImageViewTapped))
         toCourseImageView.addGestureRecognizer(tapGesture)
     }
+    
+    func updateRegisterButtonState(isRegistered: Bool) {
+        registerButton.setTitle(isRegistered ?  localizedString("RegisterButton.Registered") : localizedString("RegisterButton.Register"), for: .normal)
+        registerButton.isEnabled = !isRegistered
+        registerButton.backgroundColor = isRegistered ? .lightGray : .appRegisterButton
+    }
 
     @objc private func toCourseImageViewTapped() {
         guard let course = viewModel?.course else { return }
         delegate?.didTapToCourseImageView(course: course)
     }
-    
+
     @objc private func registerButtonTapped() {
-        print("Kayıt Ol butonuna tıklandı!")
+        guard let course = viewModel?.course else { return }
+        delegate?.didTapRegisterButton(course: course)
     }
 }

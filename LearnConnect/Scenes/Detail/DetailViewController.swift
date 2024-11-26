@@ -9,6 +9,7 @@ import UIKit
 
 class DetailViewController: BaseViewController<DetailViewModel> {
 
+    //MARK: - Properties
     private lazy var statementView = StatementView()
     
     private lazy var collectionView: UICollectionView = {
@@ -100,9 +101,8 @@ extension DetailViewController: UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let totalSpacing: CGFloat = 40 // Left + Right insets
+        let totalSpacing: CGFloat = 40
         let width = (collectionView.frame.width - totalSpacing)
-        return CGSize(width: width, height: 300) // Height ihtiyacınıza göre ayarlayın
+        return CGSize(width: width, height: 300)
     }
 }
-

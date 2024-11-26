@@ -12,7 +12,5 @@ class ProfileViewController: BaseViewController<ProfileViewModel> {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .appBackground
-        title = "Profile"
     }
-
 }

@@ -8,51 +8,43 @@
 import UIKit
 
 class MainTabBarController: UITabBarController {
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        tabBar.tintColor          = .appButtonBackground1
-        tabBar.backgroundColor    = .appBackground
-        let homeViewController    = createHomeViewController()
-        let courseViewController  = createCourseViewController()
+        tabBar.tintColor = .appButtonBackground1
+        tabBar.backgroundColor = .appBackground
+        let homeViewController = createHomeViewController()
+        let courseViewController = createCourseViewController()
         let profileViewController = createProfileViewController()
-        viewControllers = [homeViewController, courseViewController, profileViewController,]
+        viewControllers = [homeViewController, courseViewController, profileViewController]
+        navigationItem.title = localizedString("Maintab.navigationtitle")
+        navigationItem.hidesBackButton = true
     }
     
-    private func configureTabBarIcons(navController: MainNavigationController, icon: UIImage?) {
-        guard let icon = icon else { return }
-        let resizedIcon = icon.withRenderingMode(.alwaysOriginal).scaled(to: CGSize(width: 19, height: 20))
-        navController.tabBarItem.image = resizedIcon
+    private func configureTabBarIcons(iconName: String?) -> UIImage? {
+        guard let iconName = iconName,
+              let icon = UIImage(named: iconName) else { return nil }
+        return icon.withRenderingMode(.alwaysOriginal).scaled(to: CGSize(width: 19, height: 20))
     }
     
-    private func configureTabBarTitle(navController: MainNavigationController, title: String?){
-        navController.tabBarItem.title = title
+    private func createHomeViewController() -> UIViewController {
+        let homeViewController = HomeViewController(viewModel: HomeViewModel())
+        homeViewController.tabBarItem.image = configureTabBarIcons(iconName: "icHome")
+        homeViewController.tabBarItem.title = localizedString("Maintab.home")
+        return homeViewController
     }
-    
-    private func createHomeViewController()-> UINavigationController {
-        let homeViewModel      = HomeViewModel()
-        let homeViewController = HomeViewController(viewModel:homeViewModel)
-        let navController      = MainNavigationController(rootViewController: homeViewController)
-        configureTabBarIcons(navController: navController, icon: UIImage(named: "icHome"))
-        configureTabBarTitle(navController: navController, title: "Home")
-        return navController
+
+    private func createCourseViewController() -> UIViewController {
+        let courseViewController = CourseViewController(viewModel: CourseViewModel())
+        courseViewController.tabBarItem.image = configureTabBarIcons(iconName: "icCourse")
+        courseViewController.tabBarItem.title = localizedString("Maintab.course")
+        return courseViewController
     }
-    
-    private func createCourseViewController()-> UINavigationController {
-        let courseViewModel      = CourseViewModel()
-        let courseViewController = CourseViewController(viewModel: courseViewModel)
-        let navController                = MainNavigationController(rootViewController: courseViewController)
-        configureTabBarIcons(navController: navController, icon: UIImage(named: "icCourse"))
-        configureTabBarTitle(navController: navController, title: "Course")
-        return navController
-    }
-    
-    private func createProfileViewController()-> UINavigationController{
-        let profileViewModel      = ProfileViewModel()
-        let profileViewController = ProfileViewController(viewModel: profileViewModel)
-        let navController         = MainNavigationController(rootViewController: profileViewController)
-        configureTabBarIcons(navController: navController, icon: UIImage(named: "icProfile"))
-        configureTabBarTitle(navController: navController, title: "Profile")
-        return navController
+
+    private func createProfileViewController() -> UIViewController {
+        let profileViewController = ProfileViewController(viewModel: ProfileViewModel())
+        profileViewController.tabBarItem.image = configureTabBarIcons(iconName: "icProfile")
+        profileViewController.tabBarItem.title = localizedString("Maintab.profile")
+        return profileViewController
     }
 }

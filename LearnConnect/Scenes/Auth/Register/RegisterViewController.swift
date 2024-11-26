@@ -9,7 +9,8 @@ import UIKit
 import CoreData
  
 class RegisterViewController: BaseViewController<RegisterViewModel> {
-
+    
+    //MARK: - Properties
     private lazy var registerView = RegisterView()
     
     override func viewDidLoad() {
@@ -26,7 +27,7 @@ class RegisterViewController: BaseViewController<RegisterViewModel> {
     }
 }
 
-//MARK: -UILayout
+//MARK: - UILayout
 extension RegisterViewController{
     private func addSubView(){
         addRegisterView()
@@ -40,7 +41,7 @@ extension RegisterViewController{
         }
     }
 }
-//MARK: -RegisterViewDelegate
+//MARK: - RegisterViewDelegate
 extension RegisterViewController: RegisterViewDelegate{
         
     func didTapRegister(email: String, password: String) {

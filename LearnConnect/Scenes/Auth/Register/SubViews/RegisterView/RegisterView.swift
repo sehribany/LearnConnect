@@ -15,6 +15,7 @@ protocol RegisterViewDelegate: AnyObject {
 
 class RegisterView: UIView {
     
+    //MARK: - Properties
     weak var delegate: RegisterViewDelegate?
 
     private lazy var emailLabel: UILabel = {
@@ -102,7 +103,7 @@ class RegisterView: UIView {
     }
 }
 
-//MARK: -UILayout
+//MARK: - UILayout
 extension RegisterView{
     private func addSubView(){
         backgroundColor = UIColor.appBackground3

@@ -8,7 +8,8 @@
 import UIKit
  
 class LoginViewController: BaseViewController<LoginViewModel> {
-
+    
+    //MARK: - Properties
     private lazy var loginView = LoginView()
     
     override func viewDidLoad() {
@@ -24,8 +25,7 @@ class LoginViewController: BaseViewController<LoginViewModel> {
         navigationItem.title = localizedString("Login.login")
     }
 }
-
-//MARK: -UILayout
+//MARK: - UILayout
 extension LoginViewController{
     private func addSubView(){
         addLoginView()
@@ -39,7 +39,7 @@ extension LoginViewController{
         }
     }
 }
-//MARK: -LoginViewDelegate
+//MARK: - LoginViewDelegate
 extension LoginViewController: LoginViewDelegate{
     func didTapLogin(email: String, password: String) {
         guard !email.isEmpty, !password.isEmpty else {

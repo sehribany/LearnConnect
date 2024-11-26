@@ -7,7 +7,10 @@
 import Foundation
 import CoreData
 
-protocol RegisterViewDataSource {}
+protocol RegisterViewDataSource {
+    func isEmailAlreadyRegistered(email: String) -> Bool
+    func registerUser(id: UUID, email: String, password: String)
+}
 
 protocol RegisterViewEventSource {}
 
@@ -15,6 +18,8 @@ protocol RegisterViewProtocol: RegisterViewDataSource, RegisterViewEventSource {
 
 final class RegisterViewModel: BaseViewModel, RegisterViewProtocol {
     
+    /// - Parameter email: The email to check.
+    /// - Returns: `true` if the email exists, otherwise `false`.
     func isEmailAlreadyRegistered(email: String) -> Bool {
         let context = CoreDataManager.shared.context
         let fetchRequest: NSFetchRequest<Users> = Users.fetchRequest()
@@ -29,6 +34,10 @@ final class RegisterViewModel: BaseViewModel, RegisterViewProtocol {
         }
     }
     
+    ///   - Parameters:
+    ///   - id: The unique identifier for the user (default: UUID).
+    ///   - email: The user's email.
+    ///   - password: The user's password.
     func registerUser(id: UUID = UUID(), email: String, password: String) {
         let context = CoreDataManager.shared.context
         

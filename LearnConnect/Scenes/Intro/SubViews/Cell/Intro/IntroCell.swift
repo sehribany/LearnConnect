@@ -9,8 +9,9 @@ import UIKit
 import SnapKit
 
 class IntroCell: UICollectionViewCell {
-    static var identifier: String = "IntroCell"
     
+    static var identifier: String = "IntroCell"
+    //MARK: - Properties
     private lazy var imageView: UIImageView = {
         let image         = UIImageView()
         image.contentMode = .scaleAspectFill

@@ -10,6 +10,7 @@ import SnapKit
 
 class StatementView: UIView {
     
+    //MARK: - Properties
     private lazy var descriptinLabel: UILabel = {
         let label = UILabel()
         label.textColor     = .appButtonTitle1

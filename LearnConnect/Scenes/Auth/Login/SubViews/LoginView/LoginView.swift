@@ -15,8 +15,8 @@ protocol LoginViewDelegate: AnyObject {
 
 class LoginView: UIView {
     
-    weak var delegate: LoginViewDelegate?
-
+    //MARK: - Properties
+    
     private lazy var emailLabel: UILabel = {
         let label  = UILabel()
         label.text = localizedString("Login.email")
@@ -92,6 +92,8 @@ class LoginView: UIView {
         return button
     }()
     
+    weak var delegate: LoginViewDelegate?
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         addSubView()
@@ -102,7 +104,7 @@ class LoginView: UIView {
     }
 }
 
-//MARK: -UILayout
+//MARK: - UILayout
 extension LoginView{
     private func addSubView(){
         backgroundColor = UIColor.appBackground3
@@ -174,7 +176,7 @@ extension LoginView{
         }
     }
 }
-//MARK: -Keyboard
+//MARK: - Keyboard and Action
 extension LoginView{
     
     private func addTapGestureToDismissKeyboard() {

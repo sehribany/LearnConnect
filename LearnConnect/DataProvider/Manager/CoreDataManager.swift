@@ -7,10 +7,12 @@
 
 import CoreData
 
+// MARK: - CoreDataManager
 final class CoreDataManager {
     static let shared = CoreDataManager()
     private init() {}
 
+    // Persistent Container - Manages Core Data stack and persistent store.
     lazy var persistentContainer: NSPersistentContainer = {
         let container = NSPersistentContainer(name: "Users")
         container.loadPersistentStores { _, error in
@@ -25,6 +27,7 @@ final class CoreDataManager {
         return persistentContainer.viewContext
     }
 
+    // Saves changes in the context to the persistent store.
     func saveContext() {
         let context = persistentContainer.viewContext
         if context.hasChanges {
@@ -37,4 +40,3 @@ final class CoreDataManager {
         }
     }
 }
-
