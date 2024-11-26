@@ -7,27 +7,24 @@
 
 import Foundation
 
-protocol HomeViewDataSource{
-    func numberOfItemsAt(section:Int) -> Int
+protocol HomeViewDataSource {
+    func numberOfItemsAt(section: Int) -> Int
     func cellItemAt(indexPath: IndexPath) -> CourseCellProtocol
 }
-    
-protocol HomeViewEventSource{
+
+protocol HomeViewEventSource {
     var didSuccessFetchCourse: VoidClosure? { get set }
-    var didFailWithError: StringClosure?     { get set }
-    var didSelectCourse: ((Course) -> Void)? { get set }
+    var didFailWithError: StringClosure? { get set }
 }
 
-protocol HomeViewProtocol: HomeViewDataSource, HomeViewEventSource{}
+protocol HomeViewProtocol: HomeViewDataSource, HomeViewEventSource {}
 
-final class HomeViewModel: BaseViewModel, HomeViewProtocol{
+final class HomeViewModel: BaseViewModel, HomeViewProtocol {
     var didSuccessFetchCourse: VoidClosure?
     var didFailWithError: StringClosure?
-    var didSelectCourse: ((Course) -> Void)?
-    
-    var cellItems : [CourseCellViewModel] = []
-    private let courseService = CourseService()
+    var cellItems: [CourseCellViewModel] = []
     private var allCourses: [Course] = []
+    private let courseService = CourseService()
     
     func numberOfItemsAt(section: Int) -> Int {
         return cellItems.count
@@ -36,15 +33,13 @@ final class HomeViewModel: BaseViewModel, HomeViewProtocol{
     func cellItemAt(indexPath: IndexPath) -> any CourseCellProtocol {
         return cellItems[indexPath.row]
     }
+        
 }
-
 // MARK: - Fetching Course
-extension HomeViewModel{
-
+extension HomeViewModel {
     func fetchCourse() {
         courseService.fetchCourse { [weak self] result in
             guard let self = self else { return }
-            
             switch result {
             case .success(let courses):
                 self.allCourses = courses

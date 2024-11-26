@@ -4,11 +4,11 @@
 //
 //  Created by Şehriban Yıldırım on 21.11.2024.
 //
-
 import UIKit
 
 class HomeViewController: BaseViewController<HomeViewModel> {
     
+    //MARK: - Properties
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
@@ -22,19 +22,14 @@ class HomeViewController: BaseViewController<HomeViewModel> {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .appBackground
-        navigationConfigure()
         addSubView()
         contentConfigure()
         viewModel.fetchCourse()
         bindViewModel()
     }
     
-    private func navigationConfigure() {
-        navigationItem.title = "Home"
-    }
-    
     private func contentConfigure(){
+        NotificationCenter.default.addObserver(self, selector: #selector(courseDeleted(_:)), name: NSNotification.Name("CourseDeleted"), object: nil)
         collectionView.dataSource = self
         collectionView.delegate = self
     }
@@ -45,10 +40,15 @@ class HomeViewController: BaseViewController<HomeViewModel> {
                 self?.collectionView.reloadData()
             }
         }
-        
-        viewModel.didFailWithError = { error in
-            print("Veri çekme hatası: \(error)")
-        }
+    }
+    
+    @objc private func courseDeleted(_ notification: Notification) {
+        guard notification.object is Course else { return }
+        collectionView.reloadData()
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 }
 
@@ -80,6 +80,8 @@ extension HomeViewController: UICollectionViewDataSource{
         let cellItem = viewModel.cellItemAt(indexPath: indexPath)
         cell.set(viewModel: cellItem)
         cell.delegate = self
+        let isRegistered = CourseManager.shared.registeredCourses.contains { $0.id == cellItem.course.id }
+        cell.updateRegisterButtonState(isRegistered: isRegistered)
         return cell
     }
 }
@@ -105,11 +107,19 @@ extension HomeViewController: UICollectionViewDelegateFlowLayout {
     }
 }
 
-//MARK: -
+//MARK: - CourseCellDelegate
 extension HomeViewController: CourseCellDelegate{
     func didTapToCourseImageView(course: Course) {
         let detailViewModel = DetailViewModel(course: course)
         let detailVC = DetailViewController(viewModel: detailViewModel)
         navigationController?.pushViewController(detailVC, animated: true)
+    }
+    
+    func didTapRegisterButton(course: Course) {
+        guard !CourseManager.shared.registeredCourses.contains(where: { $0.id == course.id }) else {
+            return
+        }
+        CourseManager.shared.addCourse(course)
+        collectionView.reloadData()
     }
 }

@@ -13,8 +13,7 @@ class LessonCell: UICollectionViewCell {
 
     static let identifier: String = "LessonCell"
 
-    // MARK: - UI Components
-
+    // MARK: - Properties
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.textColor = .appText
@@ -90,7 +89,6 @@ class LessonCell: UICollectionViewCell {
     }()
 
     // MARK: - Initializers
-
     override init(frame: CGRect) {
         super.init(frame: frame)
         addSubViews()
@@ -101,15 +99,12 @@ class LessonCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    // MARK: - Layout
-
     override func layoutSubviews() {
         super.layoutSubviews()
         playerLayer.frame = playerView.bounds
     }
 
     // MARK: - Prepare for Reuse
-
     override func prepareForReuse() {
         super.prepareForReuse()
         cleanupPlayer()
@@ -133,11 +128,9 @@ class LessonCell: UICollectionViewCell {
     }
 
     // MARK: - Configure Player
-
     func configure(with lesson: Lesson) {
         titleLabel.text = lesson.name
         guard let videoURL = URL(string: lesson.video) else {
-            print("Geçersiz video URL: \(lesson.video)")
             return
         }
         setupPlayer(with: videoURL)
@@ -145,20 +138,16 @@ class LessonCell: UICollectionViewCell {
 
     private func setupPlayer(with url: URL) {
         cleanupPlayer()
-
-        activityIndicator.startAnimating() // Loader'ı başlat
+        activityIndicator.startAnimating()
         playerItem = AVPlayerItem(url: url)
         player = AVPlayer(playerItem: playerItem)
         playerLayer.player = player
-
         guard let currentItem = playerItem else { return }
         currentItem.addObserver(self, forKeyPath: "status", options: [.new, .initial], context: nil)
-
         addPeriodicTimeObserver()
     }
-
-
-    // MARK: - KVO
+    
+    // MARK: - KVO for Player Status
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         if keyPath == "status" {
             DispatchQueue.main.async {
@@ -171,7 +160,7 @@ class LessonCell: UICollectionViewCell {
                         let duration = currentItem.duration.seconds
                         if duration > 0 {
                             self.progressSlider.value = 0
-                            self.durationLabel.text = self.formatTime(seconds: duration)
+                            self.durationLabel.text = duration.formatToTimeString()
                         }
                     }
                 case .failed:
@@ -188,6 +177,7 @@ class LessonCell: UICollectionViewCell {
         }
     }
 
+    // Adds a periodic time observer to update playback progress and time labels.
     private func addPeriodicTimeObserver() {
         guard let player = player else { return }
         let interval = CMTime(seconds: 0.5, preferredTimescale: CMTimeScale(NSEC_PER_SEC))
@@ -197,22 +187,13 @@ class LessonCell: UICollectionViewCell {
             let currentTime = time.seconds
             if duration > 0 {
                 self.progressSlider.value = Float(currentTime / duration)
-                self.currentTimeLabel.text = self.formatTime(seconds: currentTime)
-                self.durationLabel.text = self.formatTime(seconds: duration)
+                self.currentTimeLabel.text = currentTime.formatToTimeString() // Call the extension here
+                self.durationLabel.text = duration.formatToTimeString() // Call the extension here
             }
         }
     }
-
-    private func formatTime(seconds: Double) -> String {
-        guard !seconds.isNaN && !seconds.isInfinite else { return "00:00" }
-        let totalSeconds = Int(seconds)
-        let minutes = totalSeconds / 60
-        let remainingSeconds = totalSeconds % 60
-        return String(format: "%02d:%02d", minutes, remainingSeconds)
-    }
-
+    
     // MARK: - Play/Pause
-
     @objc private func playPauseButtonTapped() {
         guard let player = player else { return }
         if isPlayerReady {
@@ -224,11 +205,9 @@ class LessonCell: UICollectionViewCell {
                 playPauseButton.setImage(UIImage(systemName: "pause.circle"), for: .normal)
             }
         } else {
-            print("Video henüz yükleniyor. Lütfen bekleyin...")
-            activityIndicator.startAnimating() // Hala yükleniyorsa loader göster
+            activityIndicator.startAnimating()
         }
     }
-
 
     @objc private func progressSliderChanged(_ sender: UISlider) {
         guard let player = player else { return }
@@ -240,9 +219,9 @@ class LessonCell: UICollectionViewCell {
             player.seek(to: seekTime)
         }
     }
-
-    // MARK: - UI Setup
-
+}
+// MARK: - UILayout and ConfigureSetUp
+extension LessonCell{
     private func addSubViews() {
         addTitle()
         addPlayerView()
@@ -251,14 +230,14 @@ class LessonCell: UICollectionViewCell {
         addProgressSlider()
         addTimeLabels()
     }
-
+    
     private func addTitle() {
         contentView.addSubview(titleLabel)
         titleLabel.snp.makeConstraints { make in
             make.top.leading.trailing.equalToSuperview().inset(10)
         }
     }
-
+    
     private func addPlayerView() {
         contentView.addSubview(playerView)
         playerView.snp.makeConstraints { make in
@@ -268,7 +247,7 @@ class LessonCell: UICollectionViewCell {
         }
         playerView.layer.addSublayer(playerLayer)
     }
-
+    
     private func addPlayPauseButton() {
         playerView.addSubview(playPauseButton)
         playPauseButton.snp.makeConstraints { make in
@@ -276,14 +255,14 @@ class LessonCell: UICollectionViewCell {
             make.size.equalTo(CGSize(width: 50, height: 50))
         }
     }
-
+    
     private func addActivityIndicator() {
         playerView.addSubview(activityIndicator)
         activityIndicator.snp.makeConstraints { make in
             make.center.equalTo(playerView)
         }
     }
-
+    
     private func addProgressSlider() {
         contentView.addSubview(progressSlider)
         progressSlider.snp.makeConstraints { make in
@@ -291,7 +270,7 @@ class LessonCell: UICollectionViewCell {
             make.leading.trailing.equalToSuperview().inset(10)
         }
     }
-
+    
     private func addTimeLabels() {
         contentView.addSubview(currentTimeLabel)
         contentView.addSubview(durationLabel)
@@ -308,7 +287,7 @@ class LessonCell: UICollectionViewCell {
             make.bottom.equalToSuperview().inset(10)
         }
     }
-
+    
     private func configureSetUp() {
         contentView.backgroundColor = .appBackground3
         contentView.layer.cornerRadius = 10
