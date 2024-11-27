@@ -42,3 +42,14 @@ final class LoginViewModel: BaseViewModel, LoginViewProtocol {
         return false
     }
 }
+
+// MARK: - User Session Management
+extension LoginViewModel {
+    func saveUserSession(email: String) {
+        UserDefaults.standard.set(email, forKey: "loggedInUserEmail")
+    }
+
+    func getUserSession() -> String? {
+        return UserDefaults.standard.string(forKey: "loggedInUserEmail")
+    }
+}

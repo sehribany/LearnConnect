@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol UserViewDelegate: AnyObject {
+    func didTapLogout()
+}
+
 class UserView: UIView {
     
     // MARK: - Properties
@@ -41,6 +45,23 @@ class UserView: UIView {
         switchControl.addTarget(self, action: #selector(didToggleThemeSwitch(_:)), for: .valueChanged)
         return switchControl
     }()
+    
+    private lazy var logoutButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.backgroundColor = .appButtonBackground1
+        button.setTitle(localizedString("Logout.button"), for: .normal)
+        button.tintColor = .appButtonTitle1
+        button.layer.cornerRadius = 9
+        button.titleLabel?.font  = UIFont.systemFont(ofSize: 23)
+        button.addTarget(self, action: #selector(didTapLogoutButton), for: .touchUpInside)
+        return button
+    }()
+    
+    weak var delegate: UserViewDelegate?
+    
+    @objc private func didTapLogoutButton() {
+        delegate?.didTapLogout()
+    }
     
     // MARK: - Initializer
     override init(frame: CGRect) {
@@ -88,6 +109,7 @@ extension UserView {
         addUserEmailLabel()
         addThemeLabel()
         addSwitch()
+        addLogoutButton()
     }
     
     private func addEmail() {
@@ -122,6 +144,15 @@ extension UserView {
         }
     }
     
+    private func addLogoutButton() {
+        addSubview(logoutButton)
+        logoutButton.snp.makeConstraints { make in
+            make.top.equalTo(themeSwitch.snp.bottom).offset(10)
+            make.leading.trailing.equalToSuperview().inset(20)
+            make.height.equalTo(50)
+        }
+    }
+    
     private func configure(){
         backgroundColor = .appBackground3
         layer.cornerRadius = 10
@@ -132,4 +163,3 @@ extension UserView {
         layer.masksToBounds = false
     }
 }
-

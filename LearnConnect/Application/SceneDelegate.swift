@@ -13,11 +13,29 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
-        window = UIWindow(windowScene: windowScene)
-        let introViewController = IntroViewController(viewModel: IntroViewModel())
-        let navigationController = MainNavigationController(rootViewController: introViewController)
-        window?.rootViewController = navigationController
-        window?.makeKeyAndVisible()
+        let window = UIWindow(windowScene: windowScene)
+        
+        // Determine the initial screen based on user login status
+        if isUserLoggedIn() {
+            let mainTabBarController = MainTabBarController(userEmail: UserDefaults.standard.string(forKey: "loggedInUserEmail"))
+            let navigationController = MainNavigationController(rootViewController: mainTabBarController)
+            window.rootViewController = navigationController
+        } else {
+            let introViewController = IntroViewController(viewModel: IntroViewModel())
+            let navigationController = MainNavigationController(rootViewController: introViewController)
+            window.rootViewController = navigationController
+        }
+        
+        self.window = window
+        window.makeKeyAndVisible()
+    }
+    
+    // MARK: - Helper Methods
+    
+
+    /// - Returns: `true` if the user is logged in, otherwise `false`.
+    private func isUserLoggedIn() -> Bool {
+        return UserDefaults.standard.string(forKey: "loggedInUserEmail") != nil
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
@@ -47,7 +65,4 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Use this method to save data, release shared resources, and store enough scene-specific state information
         // to restore the scene back to its current state.
     }
-
-
 }
-

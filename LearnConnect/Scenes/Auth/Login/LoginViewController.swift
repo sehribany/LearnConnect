@@ -17,6 +17,14 @@ class LoginViewController: BaseViewController<LoginViewModel> {
         self.addSubView()
         self.navigationConfigure()
         loginView.delegate = self
+        if let email = viewModel.getUserSession() {
+            navigateToMainTabBar(email: email)
+        }
+    }
+    
+    private func navigateToMainTabBar(email: String) {
+        let mainTabBarController = MainTabBarController(userEmail: email)
+        self.navigationController?.pushViewController(mainTabBarController, animated: false)
     }
     
     private func navigationConfigure() {
@@ -50,8 +58,8 @@ extension LoginViewController: LoginViewDelegate{
         if viewModel.authenticateUser(email: email, password: password) {
             ToastPresenter.showWarningToast(text: localizedString("Toast.loginsuccess"))
             loginView.clearFields()
-            let mainTabBarController = MainTabBarController(userEmail: email)
-            self.navigationController?.pushViewController(mainTabBarController, animated: true)
+            viewModel.saveUserSession(email: email)
+            navigateToMainTabBar(email: email)
         } else {
             ToastPresenter.showWarningToast(text: localizedString("Toast.invalid"))
             loginView.clearFields()

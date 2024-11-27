@@ -7,17 +7,29 @@
 
 import Foundation
 
-protocol ProfileViewDataSource{}
+protocol ProfileViewDataSource {
+    func getUserEmail() -> String?
+}
 
-protocol ProfileViewEventSource{}
+protocol ProfileViewEventSource {
+    func clearUserSession()
+}
 
-protocol ProfileViewProtocol: ProfileViewDataSource, ProfileViewEventSource{}
+protocol ProfileViewProtocol: ProfileViewDataSource, ProfileViewEventSource {}
 
-final class ProfileViewModel: BaseViewModel, ProfileViewProtocol{
-    var userEmail: String?
+final class ProfileViewModel: BaseViewModel, ProfileViewProtocol {
     
+    private var userEmail: String?
+
     init(userEmail: String?) {
         self.userEmail = userEmail
     }
-}
 
+    func getUserEmail() -> String? {
+        return userEmail
+    }
+
+    func clearUserSession() {
+        UserDefaults.standard.removeObject(forKey: "loggedInUserEmail")
+    }
+}
