@@ -29,6 +29,7 @@ This project is the project of the 2N Tech.
 <img width="200" alt="1" src="https://github.com/user-attachments/assets/5b0f9d27-17d7-41ff-89ae-44c9f1d2a905">
 <img width="200" alt="1" src="https://github.com/user-attachments/assets/cf674b5c-d029-4226-9183-aaa70a7d1092">
 <img width="200" alt="1" src="https://github.com/user-attachments/assets/226f27e8-8523-4e0f-87ad-2ed2f6b10abc">
+<img width="200" alt="1" src="https://github.com/user-attachments/assets/516b363c-0aac-4e48-8950-aebee2e2336f">
 
 ## Screenshots (Dark Mode)
 <img width="200" alt="1" src="https://github.com/user-attachments/assets/70fa7d6a-1cb5-4dc1-b535-74feb5f8b0bf">
@@ -45,3 +46,4 @@ This project is the project of the 2N Tech.
 <img width="200" alt="1" src="https://github.com/user-attachments/assets/690f5611-b6a9-4633-b497-7c9feb898727">
 <img width="200" alt="1" src="https://github.com/user-attachments/assets/4bcbf76c-754a-4982-a394-1e19711abe65">
 <img width="200" alt="1" src="https://github.com/user-attachments/assets/a13a3157-5be6-4a02-a052-d0711bde7c2a">
+<img width="200" alt="1" src="https://github.com/user-attachments/assets/09a4ace4-57e3-4a5d-822a-3eb0d0d43e54">
