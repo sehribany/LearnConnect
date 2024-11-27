@@ -17,24 +17,24 @@ This project is the project of the 2N Tech.
 - [Mock Api](https://67407761d0b59228b7f02ba5.mockapi.io/course) for simulating course data during development
 
 ## Features
-1. User Management
+1. User Management ✨
    - Users can create a new account using an email and password.
    - Users can log in to the application with email and password validation.
    - Users can view their personal information.
      
-2. Course Management
+2. Course Management ✨
    - Users can browse available courses.
    - Users can enroll in courses and access their content.
      
-3. Video Playback
+3. Video Playback ✨
    - Users can seamlessly watch videos of the courses they are enrolled in.
    - Video progress is saved locally, allowing users to resume videos from where they left off. 🚀
 
-4. Offline Video Viewing
+4. Offline Video Viewing ✨
    - Users can download videos to watch offline.
    - Downloaded videos are listed and managed in a separate section, ready for playback. 🚀
    
-5. Dark Mode Support
+5. Dark Mode Support ✨
    - Users can enable dark mode for a more comfortable viewing experience.
 
 ## Installation
