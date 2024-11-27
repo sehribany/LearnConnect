@@ -14,6 +14,8 @@ This project is the project of the 2N Tech.
 - SwiftEntryKit
 - Alamofire
 - Kingfisher
+- MMockAPI.io for simulating course data during development
+- For more information, visit [Mock Api][https://www.google.com](https://67407761d0b59228b7f02ba5.mockapi.io/course).
 
 ## Features
 1. User Management
