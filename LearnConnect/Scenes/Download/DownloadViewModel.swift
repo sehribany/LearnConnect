@@ -7,23 +7,25 @@
 
 import Foundation
 
-protocol DownloadViewDataSource{}
+protocol DownloadViewDataSource{
+    var downloadedVideos: [String] { get }
+    func fetchDownloadedVideos()
+}
     
-protocol DownloadViewEventSource{}
+protocol DownloadViewEventSource{
+    func deleteDownloadedVideo(at index: Int)
+}
 
 protocol DownloadViewProtocol: DownloadViewDataSource, DownloadViewEventSource{}
 
 final class DownloadViewModel: BaseViewModel, DownloadViewProtocol {
     
-    // MARK: - Properties
     private(set) var downloadedVideos: [String] = []
     
-    // MARK: - Fetch Downloaded Videos
     func fetchDownloadedVideos() {
         downloadedVideos = UserDefaults.standard.downloadedVideos()
     }
     
-    // MARK: - Delete Video
     func deleteDownloadedVideo(at index: Int) {
         guard index >= 0 && index < downloadedVideos.count else { return }
         
@@ -33,12 +35,9 @@ final class DownloadViewModel: BaseViewModel, DownloadViewProtocol {
         do {
             try FileManager.default.removeItem(at: fileURL)
             downloadedVideos.remove(at: index)
-            
-            // Güncellenmiş listeyi UserDefaults'ta sakla
             UserDefaults.standard.set(downloadedVideos, forKey: UserDefaults.downloadedVideosKey)
         } catch {
             print("Dosya silme hatası: \(error.localizedDescription)")
         }
     }
 }
-

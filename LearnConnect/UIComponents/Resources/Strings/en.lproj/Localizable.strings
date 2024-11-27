@@ -51,3 +51,9 @@
 "Profile.noemail"  = "No email available";
 "Theme.preference" = "Theme";
 "Logout.button"    = "Logout";
+
+//MARK: - Download
+"Download.failed"    = "Download failed!";
+"Download.completed" = "Download completed!";
+"Download.start"     = "Download started. Wait!";
+"Download.download"  = "Download";

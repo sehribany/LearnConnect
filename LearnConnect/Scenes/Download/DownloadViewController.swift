@@ -21,7 +21,7 @@ class DownloadViewController: BaseViewController<DownloadViewModel> {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "Download"
+        title = localizedString("Download.download")
         view.backgroundColor = .appBackground
         setupViews()
         viewModel.fetchDownloadedVideos()
@@ -61,7 +61,6 @@ extension DownloadViewController: UITableViewDataSource, UITableViewDelegate {
         }
     }
     
-    // Silme işlemi için destek
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             viewModel.deleteDownloadedVideo(at: indexPath.row)

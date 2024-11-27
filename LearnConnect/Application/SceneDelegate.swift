@@ -15,54 +15,37 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         let window = UIWindow(windowScene: windowScene)
         
-        // Determine the initial screen based on user login status
-        if isUserLoggedIn() {
+        if !isInternetAvailable() && isUserLoggedIn() { // Show the offline mode screen if the user is logged in but no internet is available
+            print("Offline mode activated")
+            let downloadViewController = DownloadViewController(viewModel: DownloadViewModel())
+            let navigationController = MainNavigationController(rootViewController: downloadViewController)
+            window.rootViewController = navigationController
+        }else if isUserLoggedIn() { // Show the MainTabBarController if the user is logged in and internet is available
+            print("User logged in, showing MainTabBarController")
             let mainTabBarController = MainTabBarController(userEmail: UserDefaults.standard.string(forKey: "loggedInUserEmail"))
             let navigationController = MainNavigationController(rootViewController: mainTabBarController)
             window.rootViewController = navigationController
-        } else {
+        }else { // Show the intro screen if the user is not logged in
+            print("User not logged in, showing IntroViewController")
             let introViewController = IntroViewController(viewModel: IntroViewModel())
             let navigationController = MainNavigationController(rootViewController: introViewController)
             window.rootViewController = navigationController
         }
-        
+
         self.window = window
         window.makeKeyAndVisible()
     }
     
     // MARK: - Helper Methods
     
-
     /// - Returns: `true` if the user is logged in, otherwise `false`.
     private func isUserLoggedIn() -> Bool {
         return UserDefaults.standard.string(forKey: "loggedInUserEmail") != nil
     }
-
-    func sceneDidDisconnect(_ scene: UIScene) {
-        // Called as the scene is being released by the system.
-        // This occurs shortly after the scene enters the background, or when its session is discarded.
-        // Release any resources associated with this scene that can be re-created the next time the scene connects.
-        // The scene may re-connect later, as its session was not necessarily discarded (see `application:didDiscardSceneSessions` instead).
-    }
-
-    func sceneDidBecomeActive(_ scene: UIScene) {
-        // Called when the scene has moved from an inactive state to an active state.
-        // Use this method to restart any tasks that were paused (or not yet started) when the scene was inactive.
-    }
-
-    func sceneWillResignActive(_ scene: UIScene) {
-        // Called when the scene will move from an active state to an inactive state.
-        // This may occur due to temporary interruptions (ex. an incoming phone call).
-    }
-
-    func sceneWillEnterForeground(_ scene: UIScene) {
-        // Called as the scene transitions from the background to the foreground.
-        // Use this method to undo the changes made on entering the background.
-    }
-
-    func sceneDidEnterBackground(_ scene: UIScene) {
-        // Called as the scene transitions from the foreground to the background.
-        // Use this method to save data, release shared resources, and store enough scene-specific state information
-        // to restore the scene back to its current state.
+    
+    /// - Returns: `true` if the internet is available, otherwise `false
+    private func isInternetAvailable() -> Bool {
+        let connection = Reachability.currentConnection()
+        return connection != .unavailable
     }
 }
