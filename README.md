@@ -52,7 +52,7 @@ This project is the project of the 2N Tech.
 4. Run the project on the simulator or a real device.
 
 ## Application Usage
-🎥 [Watch the application usage video here.](https://youtu.be/CFNEI6VwnLg)
+🎥 [Watch the application usage video here.](https://www.youtube.com/watch?v=eG8N04V4yBM)
 
 ## Screenshots
 <img width="200" alt="1" src="https://github.com/user-attachments/assets/2e68c73b-d23f-4aae-9418-5df6ac12e7fb">
