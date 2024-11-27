@@ -13,7 +13,7 @@ class StatementView: UIView {
     //MARK: - Properties
     private lazy var descriptinLabel: UILabel = {
         let label = UILabel()
-        label.textColor     = .appButtonTitle1
+        label.textColor     = .appTitle
         label.textAlignment = .left
         label.numberOfLines = 0
         label.font          = UIFont.systemFont(ofSize: 16, weight: .medium)
@@ -51,9 +51,9 @@ extension StatementView{
     }
     
     private func setupUI(){
-        backgroundColor = UIColor.appPaginationOn.withAlphaComponent(0.9)
+        backgroundColor = UIColor.appBackground3
         layer.cornerRadius = 10
-        layer.shadowColor = UIColor.appCellShadow.cgColor
+        layer.shadowColor = UIColor.appPaginationOn.cgColor
         layer.shadowOpacity = 0.2
         layer.shadowOffset = CGSize(width: 0, height: 8)
         layer.shadowRadius = 10
