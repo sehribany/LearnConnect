@@ -9,11 +9,13 @@ import UIKit
 import AVKit
 import SnapKit
 
+// MARK: - LessonCell: UICollectionViewCell
 class LessonCell: UICollectionViewCell {
 
+    // MARK: - Static Properties
     static let identifier: String = "LessonCell"
 
-    // MARK: - Properties
+    // MARK: - UI Components
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.textColor = .appText
@@ -23,11 +25,6 @@ class LessonCell: UICollectionViewCell {
         return label
     }()
 
-    private var player: AVPlayer?
-    private var playerItem: AVPlayerItem?
-    private var isPlayerReady = false
-    private var timeObserverToken: Any?
-    
     private lazy var playerView: UIView = {
         let view = UIView()
         view.layer.cornerRadius = 8
@@ -44,8 +41,7 @@ class LessonCell: UICollectionViewCell {
     
     private lazy var playPauseButton: UIButton = {
         let button = UIButton()
-        let playImage = UIImage(systemName: "play.circle")
-        button.setImage(playImage, for: .normal)
+        button.setImage(UIImage(systemName: "play.circle"), for: .normal)
         button.tintColor = .white
         button.addTarget(self, action: #selector(playPauseButtonTapped), for: .touchUpInside)
         return button
@@ -76,7 +72,7 @@ class LessonCell: UICollectionViewCell {
         let label = UILabel()
         label.text = "00:00"
         label.font = UIFont.systemFont(ofSize: 12, weight: .regular)
-        label.textColor = .white
+        label.textColor = .appText
         return label
     }()
     
@@ -84,9 +80,25 @@ class LessonCell: UICollectionViewCell {
         let label = UILabel()
         label.text = "00:00"
         label.font = UIFont.systemFont(ofSize: 12, weight: .regular)
-        label.textColor = .white
+        label.textColor = .appText
         return label
     }()
+    
+    private lazy var progressLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 12, weight: .regular)
+        label.textColor = .appText
+        label.textAlignment = .left
+        label.text = "Last watched: 00:00"
+        return label
+    }()
+
+    // MARK: - Player Properties
+    private var player: AVPlayer?
+    private var playerItem: AVPlayerItem?
+    private var isPlayerReady = false
+    private var timeObserverToken: Any?
+    private var progressSaveTimer: Timer?
 
     // MARK: - Initializers
     override init(frame: CGRect) {
@@ -107,6 +119,8 @@ class LessonCell: UICollectionViewCell {
     // MARK: - Prepare for Reuse
     override func prepareForReuse() {
         super.prepareForReuse()
+        saveCurrentProgress()
+        progressSaveTimer?.invalidate()
         cleanupPlayer()
     }
 
@@ -134,6 +148,13 @@ class LessonCell: UICollectionViewCell {
             return
         }
         setupPlayer(with: videoURL)
+        updateProgressLabel(for: videoURL)
+    }
+    
+    private func updateProgressLabel(for videoURL: URL) {
+        let videoURLString = videoURL.absoluteString
+        let savedProgress = UserDefaults.standard.getVideoProgress(for: videoURLString)
+        progressLabel.text = "Last watched: \(savedProgress.formatToTimeString())"
     }
 
     private func setupPlayer(with url: URL) {
@@ -142,9 +163,32 @@ class LessonCell: UICollectionViewCell {
         playerItem = AVPlayerItem(url: url)
         player = AVPlayer(playerItem: playerItem)
         playerLayer.player = player
+        loadSavedProgress(for: url)
         guard let currentItem = playerItem else { return }
         currentItem.addObserver(self, forKeyPath: "status", options: [.new, .initial], context: nil)
         addPeriodicTimeObserver()
+    }
+    
+    private func saveCurrentProgress() {
+        guard let player = player, let currentItem = player.currentItem else {
+            return
+        }
+        let currentTime = player.currentTime().seconds
+        guard let videoURL = (currentItem.asset as? AVURLAsset)?.url.absoluteString else {
+            print("Video URL alınamadı")
+            return
+        }
+        UserDefaults.standard.saveVideoProgress(for: videoURL, progress: currentTime)
+    }
+    
+    private func loadSavedProgress(for url: URL) {
+        let videoURLString = url.absoluteString
+        let savedProgress = UserDefaults.standard.getVideoProgress(for: videoURLString)
+        guard savedProgress > 0 else {
+            return
+        }
+        let seekTime = CMTime(seconds: savedProgress, preferredTimescale: 600)
+        player?.seek(to: seekTime, toleranceBefore: .zero, toleranceAfter: .zero)
     }
     
     // MARK: - KVO for Player Status
@@ -177,7 +221,6 @@ class LessonCell: UICollectionViewCell {
         }
     }
 
-    // Adds a periodic time observer to update playback progress and time labels.
     private func addPeriodicTimeObserver() {
         guard let player = player else { return }
         let interval = CMTime(seconds: 0.5, preferredTimescale: CMTimeScale(NSEC_PER_SEC))
@@ -187,8 +230,8 @@ class LessonCell: UICollectionViewCell {
             let currentTime = time.seconds
             if duration > 0 {
                 self.progressSlider.value = Float(currentTime / duration)
-                self.currentTimeLabel.text = currentTime.formatToTimeString() // Call the extension here
-                self.durationLabel.text = duration.formatToTimeString() // Call the extension here
+                self.currentTimeLabel.text = currentTime.formatToTimeString()
+                self.durationLabel.text = duration.formatToTimeString()
             }
         }
     }
@@ -200,12 +243,21 @@ class LessonCell: UICollectionViewCell {
             if player.timeControlStatus == .playing {
                 player.pause()
                 playPauseButton.setImage(UIImage(systemName: "play.circle"), for: .normal)
+                progressSaveTimer?.invalidate()
             } else {
                 player.play()
                 playPauseButton.setImage(UIImage(systemName: "pause.circle"), for: .normal)
+                startProgressSaveTimer()
             }
         } else {
             activityIndicator.startAnimating()
+        }
+    }
+    
+    private func startProgressSaveTimer() {
+        progressSaveTimer?.invalidate()
+        progressSaveTimer = Timer.scheduledTimer(withTimeInterval: 5, repeats: true) { [weak self] _ in
+            self?.saveCurrentProgress()
         }
     }
 
@@ -220,8 +272,9 @@ class LessonCell: UICollectionViewCell {
         }
     }
 }
+
 // MARK: - UILayout and ConfigureSetUp
-extension LessonCell{
+extension LessonCell {
     private func addSubViews() {
         addTitle()
         addPlayerView()
@@ -229,6 +282,7 @@ extension LessonCell{
         addActivityIndicator()
         addProgressSlider()
         addTimeLabels()
+        addProgressLabel()
     }
     
     private func addTitle() {
@@ -241,7 +295,7 @@ extension LessonCell{
     private func addPlayerView() {
         contentView.addSubview(playerView)
         playerView.snp.makeConstraints { make in
-            make.top.equalTo(titleLabel.snp.bottom).offset(10)
+            make.top.equalTo(titleLabel.snp.bottom).offset(5)
             make.leading.trailing.equalToSuperview().inset(10)
             make.height.equalTo(playerView.snp.width).multipliedBy(0.56)
         }
@@ -278,13 +332,19 @@ extension LessonCell{
         currentTimeLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(10)
             make.top.equalTo(progressSlider.snp.bottom).offset(5)
-            make.bottom.equalToSuperview().inset(10)
         }
         
         durationLabel.snp.makeConstraints { make in
             make.trailing.equalToSuperview().inset(10)
             make.top.equalTo(progressSlider.snp.bottom).offset(5)
-            make.bottom.equalToSuperview().inset(10)
+        }
+    }
+    
+    private func addProgressLabel() {
+        contentView.addSubview(progressLabel)
+        progressLabel.snp.makeConstraints { make in
+            make.top.equalTo(currentTimeLabel.snp.bottom).offset(5)
+            make.leading.trailing.equalToSuperview().inset(10)
         }
     }
     

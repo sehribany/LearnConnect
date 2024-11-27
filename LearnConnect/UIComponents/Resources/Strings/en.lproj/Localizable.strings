@@ -48,5 +48,6 @@
 "Maintab.profile"         = "Profile";
 
 //MARK: -Profile
-"Profile.noemail" = "No email available";
+"Profile.noemail"  = "No email available";
 "Theme.preference" = "Theme";
+"Logout.button"    = "Logout";

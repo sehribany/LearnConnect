@@ -13,7 +13,7 @@ class MainTabBarController: UITabBarController {
             CourseManager.shared.userEmail = userEmail
         }
     }
-
+    
     init(userEmail: String?) {
         self.userEmail = userEmail
         super.init(nibName: nil, bundle: nil)
@@ -41,22 +41,30 @@ class MainTabBarController: UITabBarController {
     private func createHomeViewController() -> UIViewController {
         let homeViewController = HomeViewController(viewModel: HomeViewModel())
         homeViewController.tabBarItem.title = localizedString("Maintab.home")
-        homeViewController.tabBarItem.image = UIImage(named: "icHome") // Replace with icon logic
+        homeViewController.tabBarItem.image =  resizedImage(named: "icHome", size: CGSize(width: 26, height: 28))
         return homeViewController
     }
-
+    
     private func createCourseViewController() -> UIViewController {
         let courseViewController = CourseViewController(viewModel: CourseViewModel())
         courseViewController.tabBarItem.title = localizedString("Maintab.course")
-        courseViewController.tabBarItem.image = UIImage(named: "icCourse") // Replace with icon logic
+        courseViewController.tabBarItem.image = resizedImage(named: "icCourse", size: CGSize(width: 26, height: 28))
         return courseViewController
     }
-
+    
     private func createProfileViewController() -> UIViewController {
         let profileViewController = ProfileViewController(viewModel: ProfileViewModel(userEmail: userEmail))
         profileViewController.tabBarItem.title = localizedString("Maintab.profile")
-        profileViewController.tabBarItem.image = UIImage(named: "icProfile") // Replace with icon logic
+        profileViewController.tabBarItem.image = resizedImage(named: "icProfile", size: CGSize(width: 26, height: 28))
         return profileViewController
     }
+    
+    /// - Returns: A resized UIImage or nil if the image does not exist
+    private func resizedImage(named: String, size: CGSize) -> UIImage? {
+        guard let image = UIImage(named: named) else { return nil }
+        let renderer = UIGraphicsImageRenderer(size: size)
+        return renderer.image { _ in
+            image.draw(in: CGRect(origin: .zero, size: size))
+        }
+    }
 }
-

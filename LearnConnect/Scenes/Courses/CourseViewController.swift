@@ -53,7 +53,6 @@ class CourseViewController: BaseViewController<CourseViewModel> {
 extension CourseViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let rowCount = viewModel.numberOfItemsAt(section: section)
-        print("Number of rows in section \(section): \(rowCount)")
         return rowCount
     }
 

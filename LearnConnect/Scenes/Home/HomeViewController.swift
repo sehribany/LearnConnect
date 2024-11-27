@@ -124,4 +124,3 @@ extension HomeViewController: CourseCellDelegate {
         collectionView.reloadData()
     }
 }
-
