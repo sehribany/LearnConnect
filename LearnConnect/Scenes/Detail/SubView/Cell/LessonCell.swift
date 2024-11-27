@@ -9,13 +9,11 @@ import UIKit
 import AVKit
 import SnapKit
 
-// MARK: - LessonCell: UICollectionViewCell
 class LessonCell: UICollectionViewCell {
 
-    // MARK: - Static Properties
     static let identifier: String = "LessonCell"
 
-    // MARK: - UI Components
+    // MARK: - Properties
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.textColor = .appText
@@ -25,6 +23,13 @@ class LessonCell: UICollectionViewCell {
         return label
     }()
 
+    private var player: AVPlayer?
+    private var playerItem: AVPlayerItem?
+    private var isPlayerReady = false
+    private var timeObserverToken: Any?
+    private var progressSaveTimer: Timer?
+
+    
     private lazy var playerView: UIView = {
         let view = UIView()
         view.layer.cornerRadius = 8
@@ -41,7 +46,8 @@ class LessonCell: UICollectionViewCell {
     
     private lazy var playPauseButton: UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(systemName: "play.circle"), for: .normal)
+        let playImage = UIImage(systemName: "play.circle")
+        button.setImage(playImage, for: .normal)
         button.tintColor = .white
         button.addTarget(self, action: #selector(playPauseButtonTapped), for: .touchUpInside)
         return button
@@ -92,13 +98,15 @@ class LessonCell: UICollectionViewCell {
         label.text = "Last watched: 00:00"
         return label
     }()
-
-    // MARK: - Player Properties
-    private var player: AVPlayer?
-    private var playerItem: AVPlayerItem?
-    private var isPlayerReady = false
-    private var timeObserverToken: Any?
-    private var progressSaveTimer: Timer?
+    
+    private lazy var downloadButton: UIButton = {
+        let button = UIButton()
+        let downloadImage = UIImage(systemName: "arrowshape.down.circle")
+        button.setImage(downloadImage, for: .normal)
+        button.tintColor = .appPaginationOn
+        button.addTarget(self, action: #selector(downloadButtonTapped), for: .touchUpInside)
+        return button
+    }()
 
     // MARK: - Initializers
     override init(frame: CGRect) {
@@ -120,8 +128,8 @@ class LessonCell: UICollectionViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         saveCurrentProgress()
-        progressSaveTimer?.invalidate()
-        cleanupPlayer()
+            progressSaveTimer?.invalidate()
+            cleanupPlayer()
     }
 
     private func cleanupPlayer() {
@@ -149,6 +157,46 @@ class LessonCell: UICollectionViewCell {
         }
         setupPlayer(with: videoURL)
         updateProgressLabel(for: videoURL)
+    }
+    
+    @objc private func downloadButtonTapped() {
+        guard let playerItem = playerItem,
+              let assetURL = (playerItem.asset as? AVURLAsset)?.url else {
+            print("Video URL alınamadı.")
+            return
+        }
+        
+        let destinationURL = FileManager.default.getDocumentsDirectory().appendingPathComponent(assetURL.lastPathComponent)
+        
+        if FileManager.default.fileExists(atPath: destinationURL.path) {
+            ToastPresenter.showWarningToast(text: localizedString("Toast.invalid"))
+            return
+        }
+
+        DispatchQueue.main.async {
+            ToastPresenter.showWarningToast(text: localizedString("Download.start"))
+        }
+        
+        URLSession.shared.downloadTask(with: assetURL) { tempURL, response, error in
+            guard let tempURL = tempURL, error == nil else {
+                DispatchQueue.main.async {
+                    ToastPresenter.showWarningToast(text: localizedString("Download failed"))
+                }
+                return
+            }
+            do {
+                try FileManager.default.moveItem(at: tempURL, to: destinationURL)
+                DispatchQueue.main.async {
+                    ToastPresenter.showWarningToast(text: localizedString("Download completed"))
+                    UserDefaults.standard.saveDownloadedVideo(destinationURL.lastPathComponent)
+                }
+            } catch {
+                print("Dosya taşıma hatası: \(error.localizedDescription)")
+                DispatchQueue.main.async {
+                    ToastPresenter.showWarningToast(text: localizedString("Download failed"))
+                }
+            }
+        }.resume()
     }
     
     private func updateProgressLabel(for videoURL: URL) {
@@ -221,6 +269,7 @@ class LessonCell: UICollectionViewCell {
         }
     }
 
+    // Adds a periodic time observer to update playback progress and time labels.
     private func addPeriodicTimeObserver() {
         guard let player = player else { return }
         let interval = CMTime(seconds: 0.5, preferredTimescale: CMTimeScale(NSEC_PER_SEC))
@@ -230,8 +279,8 @@ class LessonCell: UICollectionViewCell {
             let currentTime = time.seconds
             if duration > 0 {
                 self.progressSlider.value = Float(currentTime / duration)
-                self.currentTimeLabel.text = currentTime.formatToTimeString()
-                self.durationLabel.text = duration.formatToTimeString()
+                self.currentTimeLabel.text = currentTime.formatToTimeString() // Call the extension here
+                self.durationLabel.text = duration.formatToTimeString() // Call the extension here
             }
         }
     }
@@ -272,9 +321,8 @@ class LessonCell: UICollectionViewCell {
         }
     }
 }
-
 // MARK: - UILayout and ConfigureSetUp
-extension LessonCell {
+extension LessonCell{
     private func addSubViews() {
         addTitle()
         addPlayerView()
@@ -283,6 +331,7 @@ extension LessonCell {
         addProgressSlider()
         addTimeLabels()
         addProgressLabel()
+        addDownloadButton()
     }
     
     private func addTitle() {
@@ -345,6 +394,15 @@ extension LessonCell {
         progressLabel.snp.makeConstraints { make in
             make.top.equalTo(currentTimeLabel.snp.bottom).offset(5)
             make.leading.trailing.equalToSuperview().inset(10)
+        }
+    }
+    
+    private func addDownloadButton(){
+        contentView.addSubview(downloadButton)
+        downloadButton.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().inset(10)
+            make.top.equalTo(currentTimeLabel.snp.bottom).offset(3)
+            make.size.equalTo(CGSize(width: 30, height: 30))
         }
     }
     

@@ -41,6 +41,15 @@ class DetailViewController: BaseViewController<DetailViewModel> {
     private func navigationConfigure() {
         view.backgroundColor = .appBackground
         navigationItem.title = viewModel.course.name
+        
+        // Download Button
+        let downloadButton = UIBarButtonItem(image: UIImage(systemName: "arrow.down.to.line"), style: .plain, target: self, action: #selector(didTapDownloadButton))
+        navigationItem.rightBarButtonItem = downloadButton
+    }
+    
+    @objc private func didTapDownloadButton() {
+        let downloadVC = DownloadViewController(viewModel: DownloadViewModel())
+        navigationController?.pushViewController(downloadVC, animated: true)
     }
 }
 
