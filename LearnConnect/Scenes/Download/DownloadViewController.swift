@@ -45,7 +45,8 @@ extension DownloadViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
         cell.textLabel?.text = viewModel.downloadedVideos[indexPath.row]
-        cell.textLabel?.textColor = .appText
+        cell.textLabel?.textColor = .appTitle
+        cell.backgroundColor = .appBackground3
         return cell
     }
     

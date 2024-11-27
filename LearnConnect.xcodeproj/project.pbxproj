@@ -169,6 +169,7 @@
 				DEVELOPMENT_TEAM = 66C8Q7ZLNJ;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = LearnConnect/Application/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Learn Connect";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -197,6 +198,7 @@
 				DEVELOPMENT_TEAM = 66C8Q7ZLNJ;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = LearnConnect/Application/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Learn Connect";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
