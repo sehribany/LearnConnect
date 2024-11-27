@@ -7,6 +7,7 @@ This project is the project of the 2N Tech.
 - MVVM
 - SOLID
 - SPM
+- Design Pattern
 - Core Data
 - UserDefault
 - SnapKit
@@ -14,6 +15,32 @@ This project is the project of the 2N Tech.
 - Alamofire
 - Kingfisher
 
+## Screens and Features
+1. Intro Screen
+   - Onboarding Slides: Visual slides showcasing app features with images, titles, and descriptions.
+   - Smooth Navigation: Swipeable slides with real-time UIPageControl updates.
+   - Dynamic Buttons: Register and Login buttons appear only on the last slide.
+   - This screen guides users seamlessly to registration or login.
+     
+2. Login ve Register Screen
+   - Secure login and registration with email and password.
+   - Prevents duplicate registrations and validates inputs.
+   - Manages user sessions with UserDefaults.
+   - Stores user data securely in Core Data.
+   - Dismiss keyboard with a tap.
+     
+3. Home Screen
+   - Course Listing: Displays courses with images, titles, and categories.
+   - Registration: Users can register for courses, with buttons updating dynamically.
+   - Navigation: Tap a course to view details.
+   - Dynamic Updates: List refreshes automatically on course registration or deletion.
+   - Data Fetching: Courses are fetched from the server using Alamofire.
+   - Persistent Data: Registered courses are stored locally with Core Data.
+
+5. Detail Screen
+6. Course Screen
+7. Profile Screen
+8. Download Screen
 ## Screenshots
 <img width="200" alt="1" src="https://github.com/user-attachments/assets/2e68c73b-d23f-4aae-9418-5df6ac12e7fb">
 <img width="200" alt="1" src="https://github.com/user-attachments/assets/c6dee771-471e-487e-b326-2ebc98b6ce22"> 
