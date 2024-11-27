@@ -37,6 +37,19 @@ This project is the project of the 2N Tech.
 5. Dark Mode Support
    - Users can enable dark mode for a more comfortable viewing experience.
 
+## Installation
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/sehribany/LearnConnect.git
+2. Open the project in Xcode:
+   ```bash
+   cd LearnConnect
+   open LearnConnect.xcodeproj
+3. Install dependencies:
+   ```bash
+   pod install
+4. Run the project on the simulator or a real device.
+
 ## Screenshots
 <img width="200" alt="1" src="https://github.com/user-attachments/assets/2e68c73b-d23f-4aae-9418-5df6ac12e7fb">
 <img width="200" alt="1" src="https://github.com/user-attachments/assets/c6dee771-471e-487e-b326-2ebc98b6ce22"> 
