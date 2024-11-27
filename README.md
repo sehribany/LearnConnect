@@ -3,6 +3,7 @@
 This project is the project of the 2N Tech.
 
 ## Concepts & Technologies Used
+- Xcode (Version 16.0)
 - Swift
 - MVVM
 - SOLID
