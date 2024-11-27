@@ -15,32 +15,27 @@ This project is the project of the 2N Tech.
 - Alamofire
 - Kingfisher
 
-## Screens and Features
-1. Intro Screen
-   - Onboarding Slides: Visual slides showcasing app features with images, titles, and descriptions.
-   - Smooth Navigation: Swipeable slides with real-time UIPageControl updates.
-   - Dynamic Buttons: Register and Login buttons appear only on the last slide.
-   - This screen guides users seamlessly to registration or login.
+## Features
+1. User Management
+   - Users can create a new account using an email and password.
+   - Users can log in to the application with email and password validation.
+   - Users can view their personal information.
      
-2. Login ve Register Screen
-   - Secure login and registration with email and password.
-   - Prevents duplicate registrations and validates inputs.
-   - Manages user sessions with UserDefaults.
-   - Stores user data securely in Core Data.
-   - Dismiss keyboard with a tap.
+2. Course Management
+   - Users can browse available courses.
+   - Users can enroll in courses and access their content.
      
-3. Home Screen
-   - Course Listing: Displays courses with images, titles, and categories.
-   - Registration: Users can register for courses, with buttons updating dynamically.
-   - Navigation: Tap a course to view details.
-   - Dynamic Updates: List refreshes automatically on course registration or deletion.
-   - Data Fetching: Courses are fetched from the server using Alamofire.
-   - Persistent Data: Registered courses are stored locally with Core Data.
+3. Video Playback
+   - Users can seamlessly watch videos of the courses they are enrolled in.
+   - Video progress is saved locally, allowing users to resume videos from where they left off. ()
 
-5. Detail Screen
-6. Course Screen
-7. Profile Screen
-8. Download Screen
+4. Offline Video Viewing
+   - Users can download videos to watch offline.
+   - Downloaded videos are listed and managed in a separate section, ready for playback. ()
+   
+5. Dark Mode Support
+   - Users can enable dark mode for a more comfortable viewing experience.
+
 ## Screenshots
 <img width="200" alt="1" src="https://github.com/user-attachments/assets/2e68c73b-d23f-4aae-9418-5df6ac12e7fb">
 <img width="200" alt="1" src="https://github.com/user-attachments/assets/c6dee771-471e-487e-b326-2ebc98b6ce22"> 
